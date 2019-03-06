@@ -51,12 +51,59 @@ begin transaction;
 			manager_id                       integer   not null,
 			associate_id                     integer   not null,
 			scheduled                        timestamp not null,
-			location                         text      not null,
+			place                            text      not null,
 			reviewed                         timestamp,
 			interview_feedback               integer,
 			associate_input                  integer,
 			constraint interview_id          primary key (interview_id)
 		);
 /*End Creating Tables*/
-	
+
+/*Begin Insert Data*/
+	/*feedback_status*/
+		insert into feedback_status (feedback_status_description) values ('Pending');
+		insert into feedback_status (feedback_status_description) values ('No Feedback');
+		insert into feedback_status (feedback_status_description) values ('Selected for Second Round');
+		insert into feedback_status (feedback_status_description) values ('Direct Hire');
+		insert into feedback_status (feedback_status_description) values ('Selected');
+	/*interview_format*/
+		insert into interview_format (interview_format_description) values ('On Site');
+		insert into interview_format (interview_format_description) values ('In Person');
+		insert into interview_format (interview_format_description) values ('Video Call');
+		insert into interview_format (interview_format_description) values ('Phone Call');
+	/*interview_feedback*/
+		insert into interview_feedback (feedback_requested, feedback, feedback_received, feedback_delivered, feedback_status)
+			values ('2019-03-01 13:00:00', 'Solid interview.', '2019-03-02 14:00:00', '2019-03-03 15:00:00', 1);
+		insert into interview_feedback (feedback_requested, feedback, feedback_received, feedback_delivered, feedback_status)
+			values ('2019-03-02 13:00:00', 'Solid interview.', '2019-03-03 14:00:00', '2019-03-04 15:00:00', 2);
+		insert into interview_feedback (feedback_requested, feedback, feedback_received, feedback_delivered, feedback_status)
+			values ('2019-03-03 13:00:00', 'Solid interview.', '2019-03-04 14:00:00', '2019-03-05 15:00:00', 3);
+		insert into interview_feedback (feedback_requested, feedback, feedback_received, feedback_delivered, feedback_status)
+			values ('2019-03-04 13:00:00', 'Solid interview.', '2019-03-05 14:00:00', '2019-03-06 15:00:00', 4);
+		insert into interview_feedback (feedback_requested, feedback, feedback_received, feedback_delivered, feedback_status)
+			values ('2019-03-05 13:00:00', 'Solid interview.', '2019-03-06 14:00:00', '2019-03-07 15:00:00', 5);
+	/*associate_input*/
+		insert into associate_input (received_notifications, day_notice, description_provided, interview_format, proposed_format)
+			values (true, true, true, 1, 4);
+		insert into associate_input (received_notifications, day_notice, description_provided, interview_format, proposed_format)
+			values (true, true, true, 2, 3);
+		insert into associate_input (received_notifications, day_notice, description_provided, interview_format, proposed_format)
+			values (true, true, true, 3, 2);
+		insert into associate_input (received_notifications, day_notice, description_provided, interview_format, proposed_format)
+			values (true, true, true, 4, 1);
+	/*Interview*/
+		insert into interview (manager_id, associate_id, scheduled, place, reviewed, interview_feedback, associate_input)
+			values (1, 1001, '2019-02-28 12:00:00', 'USF', '2019-03-07 16:00:00', 1, 1);
+		insert into interview (manager_id, associate_id, scheduled, place, reviewed, interview_feedback, associate_input)
+			values (1, 1002, '2019-02-28 12:00:00', 'USF', '2019-03-07 16:00:00', 2, 2);
+		insert into interview (manager_id, associate_id, scheduled, place, reviewed, interview_feedback, associate_input)
+			values (2, 1003, '2019-02-28 12:00:00', 'Reston', '2019-03-07 16:00:00', 3, 3);
+		insert into interview (manager_id, associate_id, scheduled, place, reviewed, interview_feedback, associate_input)
+			values (2, 1004, '2019-02-28 12:00:00', 'Reston', '2019-03-07 16:00:00', 4, 4);
+		insert into interview (manager_id, associate_id, scheduled, place, reviewed, interview_feedback, associate_input)
+			values (3, 1005, '2019-02-28 12:00:00', 'Dallas', '2019-03-07 16:00:00', 5, null);
+		insert into interview (manager_id, associate_id, scheduled, place, reviewed, interview_feedback, associate_input)
+			values (3, 1006, '2019-02-28 12:00:00', 'Dallas', null, null, null);
+/*End Insert Data*/
+
 commit; 
