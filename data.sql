@@ -107,6 +107,48 @@ begin transaction;
 		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input)
 			values (3, 1006, 'USF', '2019-02-28 12:00:00', '2019-02-28 14:00:00', null, null, null);
 /*End Insert Data*/
-/*End Insert Data*/
 
+/*Begin Role Permissions*/
+	GRANT ALL ON TABLE public.associate_input TO aws_mike;
+	GRANT ALL ON TABLE public.feedback_status TO aws_mike;
+	GRANT ALL ON TABLE public.interview TO aws_mike;
+	GRANT ALL ON TABLE public.interview_feedback TO aws_mike;
+	GRANT ALL ON TABLE public.interview_format TO aws_mike;
+
+	GRANT ALL ON TABLE public.associate_input TO aws_chris;
+	GRANT ALL ON TABLE public.feedback_status TO aws_chris;
+	GRANT ALL ON TABLE public.interview TO aws_chris;
+	GRANT ALL ON TABLE public.interview_feedback TO aws_chris;
+	GRANT ALL ON TABLE public.interview_format TO aws_chris;
+
+	GRANT ALL ON TABLE public.associate_input TO aws_kenneth;
+	GRANT ALL ON TABLE public.feedback_status TO aws_kenneth;
+	GRANT ALL ON TABLE public.interview TO aws_kenneth;
+	GRANT ALL ON TABLE public.interview_feedback TO aws_kenneth;
+	GRANT ALL ON TABLE public.interview_format TO aws_kenneth;
+
+	GRANT ALL ON TABLE public.associate_input TO aws_peter;
+	GRANT ALL ON TABLE public.feedback_status TO aws_peter;
+	GRANT ALL ON TABLE public.interview TO aws_peter;
+	GRANT ALL ON TABLE public.interview_feedback TO aws_peter;
+	GRANT ALL ON TABLE public.interview_format TO aws_peter;
+
+	GRANT ALL ON TABLE public.associate_input TO aws_dom;
+	GRANT ALL ON TABLE public.feedback_status TO aws_dom;
+	GRANT ALL ON TABLE public.interview TO aws_dom;
+	GRANT ALL ON TABLE public.interview_feedback TO aws_dom;
+	GRANT ALL ON TABLE public.interview_format TO aws_dom;
+
+	GRANT ALL ON TABLE public.associate_input TO aws_mileena;
+	GRANT ALL ON TABLE public.feedback_status TO aws_mileena;
+	GRANT ALL ON TABLE public.interview TO aws_mileena;
+	GRANT ALL ON TABLE public.interview_feedback TO aws_mileena;
+	GRANT ALL ON TABLE public.interview_format TO aws_mileena;
+
+	GRANT ALL ON TABLE public.associate_input TO aws_ben;
+	GRANT ALL ON TABLE public.feedback_status TO aws_ben;
+	GRANT ALL ON TABLE public.interview TO aws_ben;
+	GRANT ALL ON TABLE public.interview_feedback TO aws_ben;
+	GRANT ALL ON TABLE public.interview_format TO aws_ben;
+/*End Roler Permissions*/
 commit; 
