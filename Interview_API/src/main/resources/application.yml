@@ -39,7 +39,7 @@ spring:
   profiles: dev
 
 server:
-  port: 8090
+  port: 8091
 
 eureka:
   client:
