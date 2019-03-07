@@ -36,8 +36,7 @@ begin transaction;
 		);
 		create table associate_input (
 			associate_input_id               serial    not null unique,
-			received_notifications           boolean   not null,
-			day_notice                       boolean   not null,
+			received_notifications           timestamp not null,        --Assoc says that the manager told the assoc at ${X} that they have an interview 
 			description_provided             boolean   not null,
 			interview_format                 integer   not null,
 			proposed_format                  integer   not null,
@@ -50,12 +49,15 @@ begin transaction;
 			interview_id                     serial    not null unique,
 			manager_id                       integer   not null,
 			associate_id                     integer   not null,
-			scheduled                        timestamp not null,
 			place                            text      not null,
-			reviewed                         timestamp,
+			scheduled                        timestamp not null,        --Manager told the assoc they have an interview scheduled for ${X}
+			notified                         timestamp,                 --Manager says they told the assoc at ${X} that they have an interview
+			reviewed                         timestamp,                 --Manager reviewed the interview information at ${X}
 			interview_feedback               integer,
 			associate_input                  integer,
-			constraint interview_id          primary key (interview_id)
+			constraint interview_id          primary key (interview_id),
+			constraint fk_interview_feedback foreign key (interview_feedback) references interview_feedback (interview_feedback_id),
+			constraint fk_associate_input    foreign key (associate_input) references associate_input (associate_input_id)
 		);
 /*End Creating Tables*/
 
@@ -83,27 +85,70 @@ begin transaction;
 		insert into interview_feedback (feedback_requested, feedback, feedback_received, feedback_delivered, feedback_status)
 			values ('2019-03-05 13:00:00', 'Solid interview.', '2019-03-06 14:00:00', '2019-03-07 15:00:00', 5);
 	/*associate_input*/
-		insert into associate_input (received_notifications, day_notice, description_provided, interview_format, proposed_format)
-			values (true, true, true, 1, 4);
-		insert into associate_input (received_notifications, day_notice, description_provided, interview_format, proposed_format)
-			values (true, true, true, 2, 3);
-		insert into associate_input (received_notifications, day_notice, description_provided, interview_format, proposed_format)
-			values (true, true, true, 3, 2);
-		insert into associate_input (received_notifications, day_notice, description_provided, interview_format, proposed_format)
-			values (true, true, true, 4, 1);
+		insert into associate_input (received_notifications, description_provided, interview_format, proposed_format)
+			values ('2019-02-28 14:00:00', true, 1, 1);
+		insert into associate_input (received_notifications, description_provided, interview_format, proposed_format)
+			values ('2019-02-28 14:15:00', true, 2, 2);
+		insert into associate_input (received_notifications, description_provided, interview_format, proposed_format)
+			values ('2019-02-28 14:00:00', true, 3, 3);
+		insert into associate_input (received_notifications, description_provided, interview_format, proposed_format)
+			values ('2019-03-04 12:00:00', true, 1, 4);
 	/*Interview*/
-		insert into interview (manager_id, associate_id, scheduled, place, reviewed, interview_feedback, associate_input)
-			values (1, 1001, '2019-02-28 12:00:00', 'USF', '2019-03-07 16:00:00', 1, 1);
-		insert into interview (manager_id, associate_id, scheduled, place, reviewed, interview_feedback, associate_input)
-			values (1, 1002, '2019-02-28 12:00:00', 'USF', '2019-03-07 16:00:00', 2, 2);
-		insert into interview (manager_id, associate_id, scheduled, place, reviewed, interview_feedback, associate_input)
-			values (2, 1003, '2019-02-28 12:00:00', 'Reston', '2019-03-07 16:00:00', 3, 3);
-		insert into interview (manager_id, associate_id, scheduled, place, reviewed, interview_feedback, associate_input)
-			values (2, 1004, '2019-02-28 12:00:00', 'Reston', '2019-03-07 16:00:00', 4, 4);
-		insert into interview (manager_id, associate_id, scheduled, place, reviewed, interview_feedback, associate_input)
-			values (3, 1005, '2019-02-28 12:00:00', 'Dallas', '2019-03-07 16:00:00', 5, null);
-		insert into interview (manager_id, associate_id, scheduled, place, reviewed, interview_feedback, associate_input)
-			values (3, 1006, '2019-02-28 12:00:00', 'Dallas', null, null, null);
+		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input)
+			values (1, 1001, 'USF', '2019-02-28 12:00:00', '2019-02-28 14:00:00', '2019-03-01 16:00:00', 1, 1);
+		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input)
+			values (1, 1002, 'USF', '2019-02-28 12:00:00', '2019-02-28 14:15:00', '2019-03-02 16:00:00', 2, 2);
+		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input)
+			values (2, 1003, 'Reston', '2019-02-28 12:00:00', '2019-02-28 14:00:00', '2019-03-03 16:00:00', 3, 3);
+		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input)
+			values (2, 1004, 'Reston', '2019-02-28 12:00:00', '2019-02-28 14:00:00', '2019-03-04 16:00:00', 4, 4);
+		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input)
+			values (3, 1005, 'USF', '2019-02-28 12:00:00', '2019-02-28 14:00:00', null, 5, null);
+		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input)
+			values (3, 1006, 'USF', '2019-02-28 12:00:00', '2019-02-28 14:00:00', null, null, null);
 /*End Insert Data*/
 
+/*Begin Role Permissions*/
+	GRANT ALL ON TABLE public.associate_input TO aws_mike;
+	GRANT ALL ON TABLE public.feedback_status TO aws_mike;
+	GRANT ALL ON TABLE public.interview TO aws_mike;
+	GRANT ALL ON TABLE public.interview_feedback TO aws_mike;
+	GRANT ALL ON TABLE public.interview_format TO aws_mike;
+
+	GRANT ALL ON TABLE public.associate_input TO aws_chris;
+	GRANT ALL ON TABLE public.feedback_status TO aws_chris;
+	GRANT ALL ON TABLE public.interview TO aws_chris;
+	GRANT ALL ON TABLE public.interview_feedback TO aws_chris;
+	GRANT ALL ON TABLE public.interview_format TO aws_chris;
+
+	GRANT ALL ON TABLE public.associate_input TO aws_kenneth;
+	GRANT ALL ON TABLE public.feedback_status TO aws_kenneth;
+	GRANT ALL ON TABLE public.interview TO aws_kenneth;
+	GRANT ALL ON TABLE public.interview_feedback TO aws_kenneth;
+	GRANT ALL ON TABLE public.interview_format TO aws_kenneth;
+
+	GRANT ALL ON TABLE public.associate_input TO aws_peter;
+	GRANT ALL ON TABLE public.feedback_status TO aws_peter;
+	GRANT ALL ON TABLE public.interview TO aws_peter;
+	GRANT ALL ON TABLE public.interview_feedback TO aws_peter;
+	GRANT ALL ON TABLE public.interview_format TO aws_peter;
+
+	GRANT ALL ON TABLE public.associate_input TO aws_dom;
+	GRANT ALL ON TABLE public.feedback_status TO aws_dom;
+	GRANT ALL ON TABLE public.interview TO aws_dom;
+	GRANT ALL ON TABLE public.interview_feedback TO aws_dom;
+	GRANT ALL ON TABLE public.interview_format TO aws_dom;
+
+	GRANT ALL ON TABLE public.associate_input TO aws_mileena;
+	GRANT ALL ON TABLE public.feedback_status TO aws_mileena;
+	GRANT ALL ON TABLE public.interview TO aws_mileena;
+	GRANT ALL ON TABLE public.interview_feedback TO aws_mileena;
+	GRANT ALL ON TABLE public.interview_format TO aws_mileena;
+
+	GRANT ALL ON TABLE public.associate_input TO aws_ben;
+	GRANT ALL ON TABLE public.feedback_status TO aws_ben;
+	GRANT ALL ON TABLE public.interview TO aws_ben;
+	GRANT ALL ON TABLE public.interview_feedback TO aws_ben;
+	GRANT ALL ON TABLE public.interview_format TO aws_ben;
+/*End Roler Permissions*/
 commit; 
