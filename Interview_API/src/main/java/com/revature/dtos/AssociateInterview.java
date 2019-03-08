@@ -16,14 +16,12 @@ public class AssociateInterview implements Comparable<AssociateInterview>{
 	public AssociateInterview(int associateId) {
 		interviewCount = 1;
 		this.associateId = associateId;
-		// TODO: Feign client to get name
 		AssociateName = "";
 	}
 
 	public AssociateInterview(Interview I) {
 		interviewCount = 1;
 		associateId = I.getAssociateId();
-		// TODO: Feign client to get name
 		AssociateName = "";
 	}
 
@@ -41,6 +39,10 @@ public class AssociateInterview implements Comparable<AssociateInterview>{
 
 	public void incrementInterviewCount() {
 		interviewCount++;
+	}
+	
+	public void pullName() {
+		//TODO: Feign name
 	}
 
 	@Override
