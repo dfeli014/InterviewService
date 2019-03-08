@@ -104,9 +104,4 @@ public class InterviewController {
         
         return interviewService.findInterviewsPerAssociate(pageParameters);
     }
-
-	@PostMapping("/saveInterview")
-	public Interview newInterview(@Valid @RequestBody Interview i) {
-		return interviewService.save(i);
-	}
 }
