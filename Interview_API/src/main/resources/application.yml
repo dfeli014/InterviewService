@@ -6,10 +6,11 @@ logging:
         web: DEBUG
     root: ALL
     
----
 cognito:
   url: ${COGNITO_URL}
   key: ${COGNITO_KEY}
+gateway:
+  url: ${GATEWAY_URL}
 
 spring:
   profiles:
@@ -21,7 +22,7 @@ spring:
     driverClassName: org.postgresql.Driver
     initialization-mode: NEVER
     password: ${DB_PASSWORD}
-    url: ${DB_URL}:5432/postgres
+    url: ${DB_URL}
     username: ${DB_USERNAME}
     
   jpa:
@@ -31,7 +32,7 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
-        default_schema: ${DB_SCHEMA}
+        default_schema: public
     show-sql: false  
 
 ---
@@ -48,5 +49,25 @@ eureka:
   instance:
     lease-renewal-interval-in-seconds: 1
     lease-expiration-duration-in-seconds: 2
+    
+    
+---
+spring:
+  profiles: prod
+
+server:
+  port: 5000
+  
+eureka:
+  client:
+    enabled: false
+    
+ribbon:
+  eureka: 
+    enabled: false
+    
+user-service:
+  ribbon:
+    listOfServers: ${GATEWAY_URL}
    
   
