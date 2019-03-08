@@ -148,5 +148,17 @@ public class AssociateInput {
 			return false;
 		return true;
 	}	
+
+	@Override
+	public String toString() {
+		return "{" +
+			" id='" + getId() + "'" +
+			", receivedNotifications='" + getReceivedNotifications() + "'" +
+			", descriptionProvided='" + isDescriptionProvided() + "'" +
+			", interview='" + getInterview() + "'" +
+			", interviewFormat='" + getInterviewFormat() + "'" +
+			", proposedFormat='" + getProposedFormat() + "'" +
+			"}";
+	}
 	
 }
