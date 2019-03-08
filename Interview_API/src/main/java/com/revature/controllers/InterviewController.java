@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.revature.models.AssociateInput;
 import com.revature.dtos.AssociateInterview;
 import com.revature.models.Interview;
+import com.revature.services.AssociateInputService;
 import com.revature.services.InterviewService;
 
 @RestController
@@ -26,12 +27,19 @@ public class InterviewController {
 
 	@Autowired
 	private InterviewService interviewService;
+	private AssociateInputService associateService;
 	
 	@GetMapping
 	public List<Interview> findAll() {
 		return interviewService.findAll();
 	}
-	
+
+	@PostMapping("/associateInput")
+	public AssociateInput newAssociateInput(@Valid @RequestBody AssociateInput a) {
+		System.out.println(a);
+		return associateService.save(a);
+	}
+
 	@GetMapping("/page")
 	public Page<Interview> getInterviewPage(
             @RequestParam(name="orderBy", defaultValue="id") String orderBy,
@@ -56,7 +64,7 @@ public class InterviewController {
         
         return interviewService.findInterviewsPerAssociate(pageParameters);
     }
-	
+
 	@PostMapping("/saveInterview")
 	public Interview newInterview(@Valid @RequestBody Interview i) {
 		return interviewService.save(i);

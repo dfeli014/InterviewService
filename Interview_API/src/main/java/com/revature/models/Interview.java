@@ -218,13 +218,4 @@ public class Interview {
 		return true;
 	}
 
-
-	@Override
-	public String toString() {
-		return "Interview [id=" + id + ", managerId=" + managerId + ", associateId=" + associateId + ", scheduled="
-				+ scheduled + ", notified=" + notified + ", reviewed=" + reviewed + ", place=" + place + ", feedback="
-				+ feedback + ", associateInput=" + associateInput + "]";
-	}
-	
-	
 }

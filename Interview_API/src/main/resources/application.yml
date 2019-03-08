@@ -21,7 +21,7 @@ spring:
     driverClassName: org.postgresql.Driver
     initialization-mode: NEVER
     password: ${DB_PASSWORD}
-    url: jdbc:postgresql://${DB_URL}:5432/postgres
+    url: ${DB_URL}:5432/postgres
     username: ${DB_USERNAME}
     
   jpa:
