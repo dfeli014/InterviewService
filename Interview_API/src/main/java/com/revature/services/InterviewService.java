@@ -16,5 +16,6 @@ public interface InterviewService {
 	
 	List<Interview> findAll();
 	Page<Interview> findAll(Pageable page);
+	List<AssociateInterview> findInterviewsPerAssociate();
 	Page<AssociateInterview> findInterviewsPerAssociate(Pageable page);
 }
