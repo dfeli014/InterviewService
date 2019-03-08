@@ -5,20 +5,26 @@ import com.revature.models.Interview;
 public class AssociateInterview implements Comparable<AssociateInterview>{
 	private int associateId;
 	private int interviewCount;
+	private String AssociateName;
 	
 	public AssociateInterview() {
 		associateId = 0;
 		interviewCount = 1;
+		AssociateName = "";
 	}
 
 	public AssociateInterview(int associateId) {
 		interviewCount = 1;
 		this.associateId = associateId;
+		// TODO: Feign client to get name
+		AssociateName = "";
 	}
 
 	public AssociateInterview(Interview I) {
 		interviewCount = 1;
 		associateId = I.getAssociateId();
+		// TODO: Feign client to get name
+		AssociateName = "";
 	}
 
 	public int getAssociateId() {
@@ -27,6 +33,10 @@ public class AssociateInterview implements Comparable<AssociateInterview>{
 
 	public int getInterviewCount() {
 		return interviewCount;
+	}
+
+	public String getAssociateName() {
+		return AssociateName;
 	}
 
 	public void incrementInterviewCount() {
@@ -63,7 +73,8 @@ public class AssociateInterview implements Comparable<AssociateInterview>{
 
 	@Override
 	public String toString() {
-		return "Associate [associateId=" + associateId + ", interviewCount=" + interviewCount + "]";
+		return "AssociateInterview [associateId=" + associateId + ", interviewCount=" + interviewCount
+				+ ", AssociateName=" + AssociateName + "]";
 	}
 
 }
