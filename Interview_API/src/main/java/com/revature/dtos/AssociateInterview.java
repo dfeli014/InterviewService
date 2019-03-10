@@ -5,7 +5,7 @@ import com.revature.models.Interview;
 public class AssociateInterview implements Comparable<AssociateInterview>{
 	private int associateId;
 	private int interviewCount;
-	private String AssociateName;
+  private String AssociateName;
 	
 	public AssociateInterview() {
 		associateId = 0;
@@ -31,6 +31,10 @@ public class AssociateInterview implements Comparable<AssociateInterview>{
 
 	public int getInterviewCount() {
 		return interviewCount;
+	}
+
+	public void incrementInterviewCount() {
+		interviewCount++;
 	}
 
 	public String getAssociateName() {
@@ -78,5 +82,4 @@ public class AssociateInterview implements Comparable<AssociateInterview>{
 		return "AssociateInterview [associateId=" + associateId + ", interviewCount=" + interviewCount
 				+ ", AssociateName=" + AssociateName + "]";
 	}
-
 }
