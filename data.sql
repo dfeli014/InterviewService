@@ -82,8 +82,8 @@ begin transaction;
 		insert into interview_format (interview_format_description) values ('Video Call');
 		insert into interview_format (interview_format_description) values ('Phone Call');
 	/*client*/
-		insert into interview_format (client_name) values ('Dell');
-		insert into interview_format (client_name) values ('Hewlett Packard');
+		insert into client (client_name) values ('Dell');
+		insert into client (client_name) values ('Hewlett Packard');
 	/*interview_feedback*/
 		insert into interview_feedback (feedback_requested, feedback, feedback_received, feedback_delivered, feedback_status)
 			values ('2019-03-01 13:00:00', 'Solid interview.', '2019-03-02 14:00:00', '2019-03-03 15:00:00', 1);
