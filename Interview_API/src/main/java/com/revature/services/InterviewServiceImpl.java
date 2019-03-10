@@ -9,6 +9,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import java.sql.Date;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
+import com.netflix.discovery.shared.Application;
+import com.revature.cognito.dtos.CognitoRegisterBody;
+import com.revature.cognito.dtos.CognitoRegisterResponse;
+import com.revature.cognito.dtos.CognitoTokenClaims;
+import com.revature.dtos.NewInterviewData;
+import com.revature.feign.IUserClient;
 
 import com.revature.dtos.AssociateInterview;
 import com.revature.models.Interview;
@@ -20,6 +37,9 @@ public class InterviewServiceImpl implements InterviewService {
 
 	@Autowired
 	private InterviewRepo interviewRepo;
+	
+	@Autowired
+    private IUserClient userClient;
 	
 	public Interview save(Interview i) {
 		return interviewRepo.save(i);
@@ -39,11 +59,18 @@ public class InterviewServiceImpl implements InterviewService {
 		return interviewRepo.findAll();
 	}
 	
-	@Override
-    public Page<Interview> findAll(Pageable page) {
-        // TODO Auto-generated method stub
-        return interviewRepo.findAll(page);
-    }
+	public Interview addNewInterview(NewInterviewData i) {
+		int associateId = 1;// fetch user from other db
+		Date scheduled = new Date(i.getDate());//TODO: check this is valid date
+		Interview newInterview = new Interview(0, i.getManagerId(), associateId, scheduled, null, null, i.getLocation(), null, null);
+		
+		return save(newInterview);
+	}
+  
+  public Page<Interview> findAll(Pageable page) {
+      // TODO Auto-generated method stub
+      return interviewRepo.findAll(page);
+  }
 
 	public List<AssociateInterview> findInterviewsPerAssociate() {
 		List<Interview> interviews = interviewRepo.findAll();
@@ -59,6 +86,7 @@ public class InterviewServiceImpl implements InterviewService {
 				associates.set(index, A);
 				System.out.println("Incremented: " + A);
 			} else {
+				A.pullName();
 				associates.add(A);
 			}
 		}
