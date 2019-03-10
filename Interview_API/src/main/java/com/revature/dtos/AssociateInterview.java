@@ -36,13 +36,13 @@ public class AssociateInterview implements Comparable<AssociateInterview>{
 	public String getAssociateName() {
 		return AssociateName;
 	}
+	
+	public void setAssociateName(String AssociateName) {
+		this.AssociateName=AssociateName;
+	}
 
 	public void incrementInterviewCount() {
 		interviewCount++;
-	}
-	
-	public void pullName() {
-		//TODO: Feign name
 	}
 
 	@Override

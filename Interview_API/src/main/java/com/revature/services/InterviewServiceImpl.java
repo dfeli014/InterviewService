@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.dtos.AssociateInterview;
 import com.revature.models.Interview;
+import com.revature.models.User;
 import com.revature.repos.InterviewRepo;
 import com.revature.utils.ListToPage;
 
@@ -90,8 +91,23 @@ public class InterviewServiceImpl implements InterviewService {
 				associates.set(index, A);
 				System.out.println("Incremented: " + A);
 			} else {
-				A.pullName();
 				associates.add(A);
+			}
+		}
+		System.out.println("List created");
+		for(AssociateInterview A: associates) {
+			try{
+				User U = userClient.findById(A.getAssociateId());
+				String Name = U.getFirstName();
+				if(Name=="") {
+					Name=U.getLastName();
+				} else {
+					Name+=" "+ U.getLastName();
+				}
+				System.out.println(Name);
+				A.setAssociateName(Name);
+			} catch (Exception e) {
+				System.out.println(e);
 			}
 		}
 		Collections.sort(associates);
