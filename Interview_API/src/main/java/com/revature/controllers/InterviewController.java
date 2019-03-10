@@ -94,6 +94,11 @@ public class InterviewController {
         return interviewService.findAll(pageParameters);
     }
 	
+	@GetMapping("reports/InterviewsPerAssociate")
+	public List<AssociateInterview> getInterview() {
+        return interviewService.findInterviewsPerAssociate();
+    }
+	
 	@GetMapping("reports/InterviewsPerAssociate/page")
 	public Page<AssociateInterview> getInterviewsPerAssociate(
             @RequestParam(name="pageNumber", defaultValue="0") Integer pageNumber,
@@ -104,9 +109,4 @@ public class InterviewController {
         
         return interviewService.findInterviewsPerAssociate(pageParameters);
     }
-
-	@PostMapping("/saveInterview")
-	public Interview newInterview(@Valid @RequestBody Interview i) {
-		return interviewService.save(i);
-	}
 }

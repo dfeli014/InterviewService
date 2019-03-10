@@ -90,6 +90,7 @@ public class InterviewServiceImpl implements InterviewService {
 				associates.set(index, A);
 				System.out.println("Incremented: " + A);
 			} else {
+				A.pullName();
 				associates.add(A);
 			}
 		}
