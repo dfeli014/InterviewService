@@ -150,5 +150,5 @@ begin transaction;
 	GRANT ALL ON TABLE public.interview TO aws_ben;
 	GRANT ALL ON TABLE public.interview_feedback TO aws_ben;
 	GRANT ALL ON TABLE public.interview_format TO aws_ben;
-/*End Roler Permissions*/
+/*End Role Permissions*/
 commit; 
