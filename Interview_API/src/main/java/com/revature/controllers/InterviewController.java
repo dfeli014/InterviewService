@@ -224,5 +224,16 @@ public class InterviewController {
 	@GetMapping("reports/InterviewsPerAssociate")
 	public List<AssociateInterview> getInterview() {
         return interviewService.findInterviewsPerAssociate();
+    }
+	
+	@GetMapping("reports/InterviewsPerAssociate/page")
+	public Page<AssociateInterview> getInterviewsPerAssociate(
+            @RequestParam(name="pageNumber", defaultValue="0") Integer pageNumber,
+            @RequestParam(name="pageSize", defaultValue="5") Integer pageSize) {
+		// Example url call: ~:8091/reports/InterviewsPerAssociate/page?pageNumber=0&pageSize=3
+		// The above url will return the 0th page of size 3.
+        Pageable pageParameters = PageRequest.of(pageNumber, pageSize);
+        
+        return interviewService.findInterviewsPerAssociate(pageParameters);
+    }
   }
-}
