@@ -1,7 +1,6 @@
 package com.revature.controllers;
 
 import java.io.Console;
-import java.sql.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,17 +61,6 @@ public class InterviewController {
         Pageable pageParameters = PageRequest.of(pageNumber, pageSize, sorter);
         
         return interviewService.findAll(pageParameters);
-    }
-	
-	@GetMapping("reports/InterviewsPerAssociate/page")
-	public Page<AssociateInterview> getInterviewsPerAssociate(
-            @RequestParam(name="pageNumber", defaultValue="0") Integer pageNumber,
-            @RequestParam(name="pageSize", defaultValue="5") Integer pageSize) {
-		// Example url call: ~:8091/interview/page?pageNumber=0&pageSize=3
-		// The above url will return the 0th page of size 3.
-        Pageable pageParameters = PageRequest.of(pageNumber, pageSize);
-        
-        return interviewService.findInterviewsPerAssociate(pageParameters);
     }
 	
 	//returns 2 numbers in a list

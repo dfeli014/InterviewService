@@ -45,10 +45,6 @@ public class AssociateInterview implements Comparable<AssociateInterview>{
 		this.AssociateName=AssociateName;
 	}
 
-	public void incrementInterviewCount() {
-		interviewCount++;
-	}
-
 	@Override
 	public int compareTo(AssociateInterview o) {
 		// TODO Auto-generated method stub
