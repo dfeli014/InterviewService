@@ -178,9 +178,15 @@ public class InterviewController {
 		return interviewService.save(i);
 	}
 	
-	@PostMapping("/newinterview")
+	@PostMapping("/new")
 	public ResponseEntity<Interview> addNewInterview(@Valid @RequestBody NewInterviewData i) {
-		return ResponseEntity.ok(interviewService.addNewInterview(i));
+		Interview returnedInterview = interviewService.addNewInterview(i);
+		if(returnedInterview != null) {
+			return ResponseEntity.ok(returnedInterview);
+		}
+		else {
+			return (ResponseEntity<Interview>) ResponseEntity.badRequest();
+		}
 	}
 
 	@Autowired
