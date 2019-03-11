@@ -1,10 +1,15 @@
 package com.revature.services;
 
-import java.io.Console;
-import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import java.sql.Date;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,15 +26,6 @@ import com.revature.cognito.dtos.CognitoRegisterResponse;
 import com.revature.cognito.dtos.CognitoTokenClaims;
 import com.revature.dtos.NewInterviewData;
 import com.revature.feign.IUserClient;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import com.revature.dtos.AssociateInterview;
 import com.revature.models.Interview;
@@ -64,7 +60,6 @@ public class InterviewServiceImpl implements InterviewService {
 		return interviewRepo.findAll();
 	}
 	
-	@Override
 	public Interview addNewInterview(NewInterviewData i) {
 		int associateId = i.getAssociateId();//TODO: check if id is valid
 		Date scheduled = new Date(i.getDate());//TODO: check this is valid date
@@ -111,8 +106,23 @@ public class InterviewServiceImpl implements InterviewService {
 				associates.set(index, A);
 				System.out.println("Incremented: " + A);
 			} else {
-				A.pullName();
 				associates.add(A);
+			}
+		}
+		System.out.println("List created");
+		for(AssociateInterview A: associates) {
+			try{
+				User U = userClient.findById(A.getAssociateId());
+				String Name = U.getFirstName();
+				if(Name=="") {
+					Name=U.getLastName();
+				} else {
+					Name+=" "+ U.getLastName();
+				}
+				System.out.println(Name);
+				A.setAssociateName(Name);
+			} catch (Exception e) {
+				System.out.println(e);
 			}
 		}
 		Collections.sort(associates);
