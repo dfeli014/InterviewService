@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import java.io.Console;
 import java.sql.Date;
 import java.util.List;
 
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.dtos.AssociateInterview;
 import com.revature.models.Interview;
+import com.revature.models.User;
 import com.revature.repos.InterviewRepo;
 import com.revature.utils.ListToPage;
 
@@ -64,11 +66,30 @@ public class InterviewServiceImpl implements InterviewService {
 	
 	@Override
 	public Interview addNewInterview(NewInterviewData i) {
-		int associateId = 1;// fetch user from other db
+		int associateId = i.getAssociateId();//TODO: check if id is valid
 		Date scheduled = new Date(i.getDate());//TODO: check this is valid date
-		Interview newInterview = new Interview(0, i.getManagerId(), associateId, scheduled, null, null, i.getLocation(), null, null);
-		
+		int managerId = 0;
+		System.out.println("userClient");
+		System.out.println(userClient);
+		System.out.println("i.getManagerEmail().replace(\"@\", \"%20\")");
+		System.out.println(i.getManagerEmail());
+		Interview newInterview = new Interview(0, managerId, associateId, scheduled, null, null, i.getLocation(), null, null);	
 		return save(newInterview);
+		
+//		try {
+//			ResponseEntity<User> res = userClient.findByEmail(i.getManagerEmail().replace("@", "%20"));
+//			System.out.println("res");
+//			System.out.println(res);
+//			if(res != null) {
+//				managerId = res.getBody().getUserId();
+//				Interview newInterview = new Interview(0, managerId, associateId, scheduled, null, null, i.getLocation(), null, null);	
+//				return save(newInterview);
+//			}
+//			else return null;
+//		} catch (Exception e) {
+//			System.out.println("exception" + e);
+//			return null;
+//		}
 	}
   
   public Page<Interview> findAll(Pageable page) {
