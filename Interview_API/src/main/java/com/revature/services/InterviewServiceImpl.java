@@ -179,16 +179,17 @@ public class InterviewServiceImpl implements InterviewService {
 		for(Interview I: interviews) {
 
 			if(I.getFeedback() == null) {
-				feedbackChart[2]++;					// [2] is the number of interviews with no feedback requested
+				feedbackChart[1]++;					// [1] is the number of interviews with no feedback requested
 			} else {
-				feedbackChart[1]++;					// [1] is the number of interviews with feedback requested
+				feedbackChart[2]++;					// [2] is the number of interviews with feedback requested
 				
 				if(I.getFeedback().getFeedbackReceived() != null) {
-					feedbackChart[3]++;				// [3] is the number of interviews that received feedback
-				}
-				
-				if(I.getFeedback().getFeedbackReceived() != null) {
-					feedbackChart[4]++;				// [4] is the number of interviews that have had feedback delivered to associate
+					
+					if(I.getFeedback().getFeedbackDelivered() != null) {
+						feedbackChart[3]++;			// [3] is the number of interviews that received feedback that hasn't been delivered to associate
+					} else {
+						feedbackChart[4]++;			// [4] is the number of interviews that received feedback that has been delivered to associate
+					}
 				}
 			}
 		}
