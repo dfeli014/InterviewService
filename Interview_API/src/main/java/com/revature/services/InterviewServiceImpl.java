@@ -31,6 +31,7 @@ import com.revature.feign.IUserClient;
 
 import com.revature.dtos.AssociateInterview;
 import com.revature.models.Interview;
+import com.revature.models.InterviewFeedback;
 import com.revature.models.User;
 import com.revature.repos.InterviewRepo;
 import com.revature.utils.ListToPage;
@@ -60,6 +61,11 @@ public class InterviewServiceImpl implements InterviewService {
 	public List<Interview> findAll() {
 		// TODO Auto-generated method stub
 		return interviewRepo.findAll();
+	}
+	
+	@Override
+	public Interview findById(int id) {
+		return interviewRepo.findById(id);
 	}
 	
 	public Interview addNewInterview(NewInterviewData i) {
@@ -187,5 +193,10 @@ public class InterviewServiceImpl implements InterviewService {
 			}
 		}
 		return feedbackChart;
+	}
+
+	@Override
+	public InterviewFeedback getInterviewFeedbackByInterviewID(int interviewId) {
+		return interviewRepo.findById(interviewId).getFeedback();
 	}
 }
