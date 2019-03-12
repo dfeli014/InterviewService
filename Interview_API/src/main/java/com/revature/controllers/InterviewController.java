@@ -119,7 +119,11 @@ public class InterviewController {
         return returning;
     }
 	
-
+	@GetMapping("interview/{InterviewId}")
+	public Interview getInterviewById(@PathVariable int InterviewId){
+		return interviewService.findById(InterviewId);
+	}
+	
 	//returns 2 numbers in a list
 	//the first is the number of users
 	//the second is the number of users who received 24 hour notice (according to the manager)
