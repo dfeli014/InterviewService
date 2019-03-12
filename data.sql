@@ -94,7 +94,7 @@ begin transaction;
 		insert into interview_feedback (feedback_requested, feedback, feedback_received, feedback_delivered, feedback_status)
 			values ('2019-03-04 13:00:00', 'Solid interview.', '2019-03-05 14:00:00', '2019-03-06 15:00:00', 4);
 		insert into interview_feedback (feedback_requested, feedback, feedback_received, feedback_delivered, feedback_status)
-			values ('2019-03-05 13:00:00', 'Solid interview.', '2019-03-06 14:00:00', '2019-03-07 15:00:00', 5);
+			values ('2019-03-05 13:00:00', 'Solid interview.', '2019-03-06 14:00:00', null, 5);
 	/*associate_input*/
 		insert into associate_input (received_notifications, description_provided, interview_format, proposed_format)
 			values ('2019-02-28 14:00:00', true, 1, 1);

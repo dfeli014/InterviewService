@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.revature.dtos.AssociateInterview;
 import com.revature.models.Interview;
+import com.revature.models.User;
 
 public interface InterviewService {
 
@@ -21,4 +22,6 @@ public interface InterviewService {
 	Page<Interview> findAll(Pageable page);
 	List<AssociateInterview> findInterviewsPerAssociate();
 	Page<AssociateInterview> findInterviewsPerAssociate(Pageable page);
+	List<User> getAssociateNeedFeedback();
+	Page<User> getAssociateNeedFeedback(Pageable page);
 }

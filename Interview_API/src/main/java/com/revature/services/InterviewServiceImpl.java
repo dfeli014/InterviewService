@@ -3,6 +3,8 @@ package com.revature.services;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -135,6 +137,29 @@ public class InterviewServiceImpl implements InterviewService {
 //		int end = ((page.getPageNumber()+1)*page.getPageSize())-1;
 //		return new PageImpl<AssociateInterview>(associates.subList(start, end), page, associates.size());
 		PageImpl PI = ListToPage.getPage(findInterviewsPerAssociate(), page);
+		return PI;
+	}
+
+	@Override
+	public List<User> getAssociateNeedFeedback() {
+		List<Interview> interviews = interviewRepo.findAll();
+		Set<Integer> needFeedback = new TreeSet<Integer>();
+		List<User> associates = new ArrayList<User>();
+		
+		for(Interview I: interviews) {
+			if(I.getFeedback() != null && I.getFeedback().getFeedbackDelivered() == null) {
+				needFeedback.add(I.getAssociateId());
+			}
+		}
+		for(Integer N: needFeedback) {
+			associates.add(userClient.findById(N));
+		}
+		return associates;
+	}
+
+	@Override
+	public Page<User> getAssociateNeedFeedback(Pageable page) {
+		PageImpl PI = ListToPage.getPage(getAssociateNeedFeedback(), page);
 		return PI;
 	}
 }
