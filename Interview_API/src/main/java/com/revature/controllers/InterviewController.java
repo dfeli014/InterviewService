@@ -119,7 +119,7 @@ public class InterviewController {
         return returning;
     }
 	
-	@GetMapping("interview/{InterviewId}")
+	@GetMapping("{InterviewId}")
 	public Interview getInterviewById(@PathVariable int InterviewId){
 		return interviewService.findById(InterviewId);
 	}
