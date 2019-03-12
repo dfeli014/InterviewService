@@ -81,25 +81,23 @@ public class InterviewServiceImpl implements InterviewService {
 		int managerId = 0;
 		System.out.println("userClient");
 		System.out.println(userClient);
-		System.out.println("i.getManagerEmail().replace(\"@\", \"%20\")");
+		System.out.println("i.getManagerEmail()");
 		System.out.println(i.getManagerEmail());
-		Interview newInterview = new Interview(0, managerId, associateId, scheduled, null, null, i.getLocation(), null, null);	
-		return save(newInterview);
 		
-//		try {
-//			ResponseEntity<User> res = userClient.findByEmail(i.getManagerEmail().replace("@", "%20"));
-//			System.out.println("res");
-//			System.out.println(res);
-//			if(res != null) {
-//				managerId = res.getBody().getUserId();
-//				Interview newInterview = new Interview(0, managerId, associateId, scheduled, null, null, i.getLocation(), null, null);	
-//				return save(newInterview);
-//			}
-//			else return null;
-//		} catch (Exception e) {
-//			System.out.println("exception" + e);
-//			return null;
-//		}
+		try {
+			ResponseEntity<User> res = userClient.findByEmail(i.getManagerEmail());
+			System.out.println("res");
+			System.out.println(res);
+			if(res != null) {
+				managerId = res.getBody().getUserId();
+				Interview newInterview = new Interview(0, managerId, associateId, scheduled, null, null, i.getLocation(), null, null);	
+				return save(newInterview);
+			}
+			else return null;
+		} catch (Exception e) {
+			System.out.println("exception: " + e);
+			return null;
+		}
 	}
   
   public Page<Interview> findAll(Pageable page) {
@@ -157,12 +155,11 @@ public class InterviewServiceImpl implements InterviewService {
 	public Interview setFeedback(FeedbackData f) {
 		InterviewFeedback interviewFeedback = new InterviewFeedback(0, new Date(f.getFeedbackRequestedDate()), f.getFeedbackText(), new Date(f.getFeedbackReceivedDate()), new FeedbackStatus());
 		System.out.println("interviewFeedback\n" + interviewFeedback);
-		Optional<Interview> i = interviewRepo.findById(f.getInterviewId());
-		if(i.isPresent()) {
-			Interview interview = i.get();
+		Interview i = interviewRepo.findById(f.getInterviewId());
+		if(i != null) {
 			interviewFeedback = feedbackRepo.save(interviewFeedback);
-			interview.setFeedback(interviewFeedback);	
-			return save(interview);
+			i.setFeedback(interviewFeedback);	
+			return save(i);
 		}
 		else return null;
   }
