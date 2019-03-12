@@ -246,4 +246,14 @@ public class InterviewController {
         
         return interviewService.getAssociateNeedFeedback(pageParameters);
     }
+	
+	// [0] is the total number of interviews
+	// [1] is the number of interviews with feedback requested
+	// [2] is the number of interviews with no feedback requested
+	// [3] is the number of interviews that received feedback
+	// [4] is the number of interviews that have had feedback delivered to associate
+	@GetMapping("reports/AssociateNeedFeedback/chart")
+	public Integer[] getAssociateNeedFeedbackChart() {
+		return interviewService.getAssociateNeedFeedbackChart();
+	}
   }
