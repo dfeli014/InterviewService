@@ -162,4 +162,30 @@ public class InterviewServiceImpl implements InterviewService {
 		PageImpl PI = ListToPage.getPage(getAssociateNeedFeedback(), page);
 		return PI;
 	}
+
+	@Override
+	public Integer[] getAssociateNeedFeedbackChart() {
+		List<Interview> interviews = interviewRepo.findAll();
+		Integer[] feedbackChart = {0,0,0,0,0};
+		
+		feedbackChart[0] = interviews.size();		// [0] is the total number of interviews
+		
+		for(Interview I: interviews) {
+
+			if(I.getFeedback() == null) {
+				feedbackChart[2]++;					// [2] is the number of interviews with no feedback requested
+			} else {
+				feedbackChart[1]++;					// [1] is the number of interviews with feedback requested
+				
+				if(I.getFeedback().getFeedbackReceived() != null) {
+					feedbackChart[3]++;				// [3] is the number of interviews that received feedback
+				}
+				
+				if(I.getFeedback().getFeedbackReceived() != null) {
+					feedbackChart[4]++;				// [4] is the number of interviews that have had feedback delivered to associate
+				}
+			}
+		}
+		return feedbackChart;
+	}
 }

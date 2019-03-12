@@ -24,4 +24,5 @@ public interface InterviewService {
 	Page<AssociateInterview> findInterviewsPerAssociate(Pageable page);
 	List<User> getAssociateNeedFeedback();
 	Page<User> getAssociateNeedFeedback(Pageable page);
+	Integer[] getAssociateNeedFeedbackChart();
 }
