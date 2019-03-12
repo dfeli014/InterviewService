@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -66,6 +68,11 @@ public class InterviewServiceImpl implements InterviewService {
 	public List<Interview> findAll() {
 		// TODO Auto-generated method stub
 		return interviewRepo.findAll();
+	}
+	
+	@Override
+	public Interview findById(int id) {
+		return interviewRepo.findById(id);
 	}
 	
 	public Interview addNewInterview(NewInterviewData i) {
@@ -158,5 +165,60 @@ public class InterviewServiceImpl implements InterviewService {
 			return save(interview);
 		}
 		else return null;
+  }
+  
+	@Override
+	public List<User> getAssociateNeedFeedback() {
+		List<Interview> interviews = interviewRepo.findAll();
+		Set<Integer> needFeedback = new TreeSet<Integer>();
+		List<User> associates = new ArrayList<User>();
+		
+		for(Interview I: interviews) {
+			if(I.getFeedback() != null && I.getFeedback().getFeedbackDelivered() == null) {
+				needFeedback.add(I.getAssociateId());
+			}
+		}
+		for(Integer N: needFeedback) {
+			associates.add(userClient.findById(N));
+		}
+		return associates;
+	}
+
+	@Override
+	public Page<User> getAssociateNeedFeedback(Pageable page) {
+		PageImpl PI = ListToPage.getPage(getAssociateNeedFeedback(), page);
+		return PI;
+	}
+
+	@Override
+	public Integer[] getAssociateNeedFeedbackChart() {
+		List<Interview> interviews = interviewRepo.findAll();
+		Integer[] feedbackChart = {0,0,0,0,0};
+		
+		feedbackChart[0] = interviews.size();		// [0] is the total number of interviews
+		
+		for(Interview I: interviews) {
+
+			if(I.getFeedback() == null) {
+				feedbackChart[1]++;					// [1] is the number of interviews with no feedback requested
+			} else {
+				feedbackChart[2]++;					// [2] is the number of interviews with feedback requested
+				
+				if(I.getFeedback().getFeedbackReceived() != null) {
+					
+					if(I.getFeedback().getFeedbackDelivered() != null) {
+						feedbackChart[3]++;			// [3] is the number of interviews that received feedback that hasn't been delivered to associate
+					} else {
+						feedbackChart[4]++;			// [4] is the number of interviews that received feedback that has been delivered to associate
+					}
+				}
+			}
+		}
+		return feedbackChart;
+	}
+
+	@Override
+	public InterviewFeedback getInterviewFeedbackByInterviewID(int interviewId) {
+		return interviewRepo.findById(interviewId).getFeedback();
 	}
 }

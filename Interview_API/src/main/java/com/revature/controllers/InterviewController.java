@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -118,7 +119,11 @@ public class InterviewController {
         return returning;
     }
 	
-
+	@GetMapping("{InterviewId}")
+	public Interview getInterviewById(@PathVariable int InterviewId){
+		return interviewService.findById(InterviewId);
+	}
+	
 	//returns 2 numbers in a list
 	//the first is the number of users
 	//the second is the number of users who received 24 hour notice (according to the manager)
@@ -224,13 +229,18 @@ public class InterviewController {
 		return (ResponseEntity<Interview>) ResponseEntity.badRequest();
 	}
 	
+	@GetMapping("Feedback/InterviewId/{InterviewId}")
+	public InterviewFeedback getInterviewFeedbackByInterviewID(@PathVariable int InterviewId) {
+		return interviewService.getInterviewFeedbackByInterviewID(InterviewId);
+  }
+  
 	@GetMapping("reports/InterviewsPerAssociate")
-	public List<AssociateInterview> getInterview() {
+	public List<AssociateInterview> getInterviewsPerAssociate() {
         return interviewService.findInterviewsPerAssociate();
     }
 	
 	@GetMapping("reports/InterviewsPerAssociate/page")
-	public Page<AssociateInterview> getInterviewsPerAssociate(
+	public Page<AssociateInterview> getInterviewsPerAssociatePaged(
             @RequestParam(name="pageNumber", defaultValue="0") Integer pageNumber,
             @RequestParam(name="pageSize", defaultValue="5") Integer pageSize) {
 		// Example url call: ~:8091/reports/InterviewsPerAssociate/page?pageNumber=0&pageSize=3
@@ -239,5 +249,31 @@ public class InterviewController {
         
         return interviewService.findInterviewsPerAssociate(pageParameters);
     }
+	
+	@GetMapping("reports/AssociateNeedFeedback")
+	public List<User> getAssociateNeedFeedback() {
+        return interviewService.getAssociateNeedFeedback();
+    }
+	
+	@GetMapping("reports/AssociateNeedFeedback/page")
+	public Page<User> getAssociateNeedFeedbackPaged(
+            @RequestParam(name="pageNumber", defaultValue="0") Integer pageNumber,
+            @RequestParam(name="pageSize", defaultValue="5") Integer pageSize) {
+		// Example url call: ~:8091/reports/InterviewsPerAssociate/page?pageNumber=0&pageSize=3
+		// The above url will return the 0th page of size 3.
+        Pageable pageParameters = PageRequest.of(pageNumber, pageSize);
+        
+        return interviewService.getAssociateNeedFeedback(pageParameters);
+    }
+	
+	// [0] is the total number of interviews
+	// [1] is the number of interviews with no feedback requested
+	// [2] is the number of interviews with feedback requested
+	// [3] is the number of interviews that received feedback that hasn't been delivered to associate
+	// [4] is the number of interviews that received feedback that has been delivered to associate
+	@GetMapping("reports/AssociateNeedFeedback/chart")
+	public Integer[] getAssociateNeedFeedbackChart() {
+		return interviewService.getAssociateNeedFeedbackChart();
+	}
   }
 
