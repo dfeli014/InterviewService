@@ -218,4 +218,11 @@ public class InterviewServiceImpl implements InterviewService {
 	public InterviewFeedback getInterviewFeedbackByInterviewID(int interviewId) {
 		return interviewRepo.findById(interviewId).getFeedback();
 	}
+
+	@Override
+	public Interview markReviewed(int interviewId) {
+		Interview I = interviewRepo.findById(interviewId);
+		I.setReviewed(new Date(System.currentTimeMillis()));
+		return interviewRepo.save(I);
+	}
 }
