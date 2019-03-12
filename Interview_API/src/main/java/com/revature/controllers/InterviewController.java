@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.revature.dtos.AssociateInterview;
-
+import com.revature.dtos.FeedbackData;
 import com.revature.models.Interview;
 import com.revature.models.InterviewFeedback;
 import com.revature.models.InterviewFormat;
@@ -220,11 +220,20 @@ public class InterviewController {
 		return associateService.save(a);
 	}
 	
+	@PostMapping("/feedback")
+	public ResponseEntity<Interview> updateInterviewFeedback(@Valid @RequestBody FeedbackData f) {
+		Interview result = interviewService.setFeedback(f);
+		if(result != null) {
+			return ResponseEntity.ok(interviewService.setFeedback(f));
+		}
+		return (ResponseEntity<Interview>) ResponseEntity.badRequest();
+	}
+	
 	@GetMapping("Feedback/InterviewId/{InterviewId}")
 	public InterviewFeedback getInterviewFeedbackByInterviewID(@PathVariable int InterviewId) {
 		return interviewService.getInterviewFeedbackByInterviewID(InterviewId);
-	}
-	
+  }
+  
 	@GetMapping("reports/InterviewsPerAssociate")
 	public List<AssociateInterview> getInterviewsPerAssociate() {
         return interviewService.findInterviewsPerAssociate();
@@ -267,3 +276,4 @@ public class InterviewController {
 		return interviewService.getAssociateNeedFeedbackChart();
 	}
   }
+

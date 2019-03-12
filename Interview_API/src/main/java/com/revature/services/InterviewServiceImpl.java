@@ -3,6 +3,7 @@ package com.revature.services;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -30,9 +31,12 @@ import com.revature.dtos.NewInterviewData;
 import com.revature.feign.IUserClient;
 
 import com.revature.dtos.AssociateInterview;
+import com.revature.dtos.FeedbackData;
+import com.revature.models.FeedbackStatus;
 import com.revature.models.Interview;
 import com.revature.models.InterviewFeedback;
 import com.revature.models.User;
+import com.revature.repos.FeedbackRepo;
 import com.revature.repos.InterviewRepo;
 import com.revature.utils.ListToPage;
 
@@ -41,6 +45,9 @@ public class InterviewServiceImpl implements InterviewService {
 
 	@Autowired
 	private InterviewRepo interviewRepo;
+	
+	@Autowired
+	private FeedbackRepo feedbackRepo;
 	
 	@Autowired
     private IUserClient userClient;
@@ -146,6 +153,20 @@ public class InterviewServiceImpl implements InterviewService {
 		return PI;
 	}
 
+	@Override
+	public Interview setFeedback(FeedbackData f) {
+		InterviewFeedback interviewFeedback = new InterviewFeedback(0, new Date(f.getFeedbackRequestedDate()), f.getFeedbackText(), new Date(f.getFeedbackReceivedDate()), new FeedbackStatus());
+		System.out.println("interviewFeedback\n" + interviewFeedback);
+		Optional<Interview> i = interviewRepo.findById(f.getInterviewId());
+		if(i.isPresent()) {
+			Interview interview = i.get();
+			interviewFeedback = feedbackRepo.save(interviewFeedback);
+			interview.setFeedback(interviewFeedback);	
+			return save(interview);
+		}
+		else return null;
+  }
+  
 	@Override
 	public List<User> getAssociateNeedFeedback() {
 		List<Interview> interviews = interviewRepo.findAll();
