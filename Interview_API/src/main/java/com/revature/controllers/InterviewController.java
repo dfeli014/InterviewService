@@ -123,6 +123,11 @@ public class InterviewController {
 	public Interview getInterviewById(@PathVariable int InterviewId){
 		return interviewService.findById(InterviewId);
 	}
+
+	@GetMapping("markReviewed/{InterviewId}")
+	public Interview markReviewed(@PathVariable int InterviewId){
+		return interviewService.markReviewed(InterviewId);
+	}
 	
 	//returns 2 numbers in a list
 	//the first is the number of users

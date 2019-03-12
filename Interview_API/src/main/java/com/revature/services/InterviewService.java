@@ -30,4 +30,5 @@ public interface InterviewService {
 	Page<User> getAssociateNeedFeedback(Pageable page);
 	Integer[] getAssociateNeedFeedbackChart();
 	InterviewFeedback getInterviewFeedbackByInterviewID(int interviewId);
+	Interview markReviewed(int interviewId);
 }
