@@ -94,7 +94,7 @@ begin transaction;
 		insert into interview_feedback (feedback_requested, feedback, feedback_received, feedback_delivered, feedback_status)
 			values ('2019-03-04 13:00:00', 'Solid interview.', '2019-03-05 14:00:00', '2019-03-06 15:00:00', 4);
 		insert into interview_feedback (feedback_requested, feedback, feedback_received, feedback_delivered, feedback_status)
-			values ('2019-03-05 13:00:00', 'Solid interview.', '2019-03-06 14:00:00', null, 5);
+			values ('2019-03-05 13:00:00', 'Solid interview.', '2019-03-06 14:00:00', '2019-03-07 15:00:00', 5);
 	/*associate_input*/
 		insert into associate_input (received_notifications, description_provided, interview_format, proposed_format)
 			values ('2019-02-28 14:00:00', true, 1, 1);
@@ -126,6 +126,11 @@ begin transaction;
 	GRANT ALL ON TABLE public.interview TO aws_mike;
 	GRANT ALL ON TABLE public.interview_feedback TO aws_mike;
 	GRANT ALL ON TABLE public.interview_format TO aws_mike;
+	GRANT ALL ON SEQUENCE public.associate_input_associate_input_id_seq TO aws_mike;
+	GRANT ALL ON SEQUENCE public.client_client_id_seq TO aws_mike;
+	GRANT ALL ON SEQUENCE public.feedback_status_feedback_status_id_seq TO aws_mike;
+	GRANT ALL ON SEQUENCE public.interview_format_interview_format_id_seq TO aws_mike;
+	GRANT ALL ON SEQUENCE public.interview_interview_id_seq TO aws_mike;
 
 	GRANT ALL ON TABLE public.associate_input TO aws_chris;
 	GRANT ALL ON TABLE public.feedback_status TO aws_chris;
@@ -133,6 +138,11 @@ begin transaction;
 	GRANT ALL ON TABLE public.interview TO aws_chris;
 	GRANT ALL ON TABLE public.interview_feedback TO aws_chris;
 	GRANT ALL ON TABLE public.interview_format TO aws_chris;
+	GRANT ALL ON SEQUENCE public.associate_input_associate_input_id_seq TO aws_chris;
+	GRANT ALL ON SEQUENCE public.client_client_id_seq TO aws_chris;
+	GRANT ALL ON SEQUENCE public.feedback_status_feedback_status_id_seq TO aws_chris;
+	GRANT ALL ON SEQUENCE public.interview_format_interview_format_id_seq TO aws_chris;
+	GRANT ALL ON SEQUENCE public.interview_interview_id_seq TO aws_chris;
 
 	GRANT ALL ON TABLE public.associate_input TO aws_kenneth;
 	GRANT ALL ON TABLE public.feedback_status TO aws_kenneth;
@@ -140,6 +150,11 @@ begin transaction;
 	GRANT ALL ON TABLE public.interview TO aws_kenneth;
 	GRANT ALL ON TABLE public.interview_feedback TO aws_kenneth;
 	GRANT ALL ON TABLE public.interview_format TO aws_kenneth;
+	GRANT ALL ON SEQUENCE public.associate_input_associate_input_id_seq TO aws_kenneth;
+	GRANT ALL ON SEQUENCE public.client_client_id_seq TO aws_kenneth;
+	GRANT ALL ON SEQUENCE public.feedback_status_feedback_status_id_seq TO aws_kenneth;
+	GRANT ALL ON SEQUENCE public.interview_format_interview_format_id_seq TO aws_kenneth;
+	GRANT ALL ON SEQUENCE public.interview_interview_id_seq TO aws_kenneth;
 
 	GRANT ALL ON TABLE public.associate_input TO aws_peter;
 	GRANT ALL ON TABLE public.feedback_status TO aws_peter;
@@ -147,6 +162,11 @@ begin transaction;
 	GRANT ALL ON TABLE public.interview TO aws_peter;
 	GRANT ALL ON TABLE public.interview_feedback TO aws_peter;
 	GRANT ALL ON TABLE public.interview_format TO aws_peter;
+	GRANT ALL ON SEQUENCE public.associate_input_associate_input_id_seq TO aws_peter;
+	GRANT ALL ON SEQUENCE public.client_client_id_seq TO aws_peter;
+	GRANT ALL ON SEQUENCE public.feedback_status_feedback_status_id_seq TO aws_peter;
+	GRANT ALL ON SEQUENCE public.interview_format_interview_format_id_seq TO aws_peter;
+	GRANT ALL ON SEQUENCE public.interview_interview_id_seq TO aws_peter;
 
 	GRANT ALL ON TABLE public.associate_input TO aws_dom;
 	GRANT ALL ON TABLE public.feedback_status TO aws_dom;
@@ -154,6 +174,11 @@ begin transaction;
 	GRANT ALL ON TABLE public.interview TO aws_dom;
 	GRANT ALL ON TABLE public.interview_feedback TO aws_dom;
 	GRANT ALL ON TABLE public.interview_format TO aws_dom;
+	GRANT ALL ON SEQUENCE public.associate_input_associate_input_id_seq TO aws_dom;
+	GRANT ALL ON SEQUENCE public.client_client_id_seq TO aws_dom;
+	GRANT ALL ON SEQUENCE public.feedback_status_feedback_status_id_seq TO aws_dom;
+	GRANT ALL ON SEQUENCE public.interview_format_interview_format_id_seq TO aws_dom;
+	GRANT ALL ON SEQUENCE public.interview_interview_id_seq TO aws_dom;
 
 	GRANT ALL ON TABLE public.associate_input TO aws_mileena;
 	GRANT ALL ON TABLE public.feedback_status TO aws_mileena;
@@ -161,6 +186,11 @@ begin transaction;
 	GRANT ALL ON TABLE public.interview TO aws_mileena;
 	GRANT ALL ON TABLE public.interview_feedback TO aws_mileena;
 	GRANT ALL ON TABLE public.interview_format TO aws_mileena;
+	GRANT ALL ON SEQUENCE public.associate_input_associate_input_id_seq TO aws_mileena;
+	GRANT ALL ON SEQUENCE public.client_client_id_seq TO aws_mileena;
+	GRANT ALL ON SEQUENCE public.feedback_status_feedback_status_id_seq TO aws_mileena;
+	GRANT ALL ON SEQUENCE public.interview_format_interview_format_id_seq TO aws_mileena;
+	GRANT ALL ON SEQUENCE public.interview_interview_id_seq TO aws_mileena;
 
 	GRANT ALL ON TABLE public.associate_input TO aws_ben;
 	GRANT ALL ON TABLE public.feedback_status TO aws_ben;
@@ -168,5 +198,10 @@ begin transaction;
 	GRANT ALL ON TABLE public.interview TO aws_ben;
 	GRANT ALL ON TABLE public.interview_feedback TO aws_ben;
 	GRANT ALL ON TABLE public.interview_format TO aws_ben;
-/*End Role Permissions*/
+	GRANT ALL ON SEQUENCE public.associate_input_associate_input_id_seq TO aws_ben;
+	GRANT ALL ON SEQUENCE public.client_client_id_seq TO aws_ben;
+	GRANT ALL ON SEQUENCE public.feedback_status_feedback_status_id_seq TO aws_ben;
+	GRANT ALL ON SEQUENCE public.interview_format_interview_format_id_seq TO aws_ben;
+	GRANT ALL ON SEQUENCE public.interview_interview_id_seq TO aws_ben;
+	/*End Role Permissions*/
 commit; 
