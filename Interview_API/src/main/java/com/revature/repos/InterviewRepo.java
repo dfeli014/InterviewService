@@ -6,4 +6,5 @@ import com.revature.models.*;
 public interface InterviewRepo extends JpaRepository<Interview, Integer> {
 	
 	Interview findById(int id);
+
 }

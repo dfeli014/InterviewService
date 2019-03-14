@@ -35,6 +35,9 @@ import com.revature.dtos.NewInterviewData;
 import com.revature.feign.IUserClient;
 import com.revature.models.User;
 import com.revature.dtos.AssociateInterview;
+import com.revature.dtos.NewAssociateInput;
+import com.revature.models.Interview;
+import com.revature.services.AssociateInputService;
 import com.revature.services.InterviewService;
 
 @RestController
@@ -43,7 +46,8 @@ public class InterviewController {
 
 	@Autowired
 	private InterviewService interviewService;
-	private AssociateInputService associateService;
+	@Autowired
+	private AssociateInputService associateInputService;
 	
 	@GetMapping
 	public List<Interview> findAll() {
@@ -198,7 +202,7 @@ public class InterviewController {
 			return (ResponseEntity<Interview>) ResponseEntity.badRequest();
 		}
 	}
-
+  
 	@Autowired
     private IUserClient userClient;
 
@@ -219,10 +223,17 @@ public class InterviewController {
 		return ResponseEntity.ok(o);		
 	}
 
+	@GetMapping("/findInterview")
+	public Interview findInterviewById(
+		@RequestParam(name="interviewId", defaultValue="id") int interviewId) {
+
+		return interviewService.findById(interviewId);
+	}
+
 	@PostMapping("/associateInput")
-	public AssociateInput newAssociateInput(@Valid @RequestBody AssociateInput a) {
-		System.out.println(a);
-		return associateService.save(a);
+	public ResponseEntity<Interview> newAssociateInput(@Valid @RequestBody NewAssociateInput a) {
+		//System.out.println(a);
+		return ResponseEntity.ok(interviewService.addAssociateInput(a));
 	}
 	
 	@PostMapping("/feedback")
