@@ -78,40 +78,37 @@ public class InterviewServiceImpl implements InterviewService {
 		return interviewRepo.findAll();
 	}
 
-	@Override
-	public Interview findById(int id) {
-		return interviewRepo.findById(id);
-	}
 	
 	public Interview addNewInterview(NewInterviewData i) {
-		int associateId = 1;// fetch user from other db
-		Date scheduled = new Date(i.getDate());// TODO: check this is valid date
-		Interview newInterview = new Interview(0, i.getManagerId(), associateId, scheduled, null, null, i.getLocation(),
-				null, null);
+		// int associateId = 1;// fetch user from other db
+		// Date scheduled = new Date(i.getDate());// TODO: check this is valid date
+		// Interview newInterview = new Interview(0, i.getManagerId(), associateId, scheduled, null, null, i.getLocation(),
+		// 		null, null);
 
-		return save(newInterview);
-		int associateId = i.getAssociateId();//TODO: check if id is valid
-		Date scheduled = new Date(i.getDate());//TODO: check this is valid date
-		int managerId = 0;
-		System.out.println("userClient");
-		System.out.println(userClient);
-		System.out.println("i.getManagerEmail()");
-		System.out.println(i.getManagerEmail());
+		// // return save(newInterview);
+		// // int associateId = i.getAssociateId();//TODO: check if id is valid
+		// // Date scheduled = new Date(i.getDate());//TODO: check this is valid date
+		// // int managerId = 0;
+		// System.out.println("userClient");
+		// System.out.println(userClient);
+		// System.out.println("i.getManagerEmail()");
+		// System.out.println(i.getManagerEmail());
 		
-		try {
-			ResponseEntity<User> res = userClient.findByEmail(i.getManagerEmail());
-			System.out.println("res");
-			System.out.println(res);
-			if(res != null) {
-				managerId = res.getBody().getUserId();
-				Interview newInterview = new Interview(0, managerId, associateId, scheduled, null, null, i.getLocation(), null, null);	
-				return save(newInterview);
-			}
-			else return null;
-		} catch (Exception e) {
-			System.out.println("exception: " + e);
-			return null;
-		}
+		// try {
+		// 	ResponseEntity<User> res = userClient.findByEmail(i.getManagerEmail());
+		// 	System.out.println("res");
+		// 	System.out.println(res);
+		// 	if(res != null) {
+		// 		managerId = res.getBody().getUserId();
+		// 		Interview newInterview = new Interview(0, managerId, associateId, scheduled, null, null, i.getLocation(), null, null);	
+		// 		return save(newInterview);
+		// 	}
+		// 	else return null;
+		// } catch (Exception e) {
+		// 	System.out.println("exception: " + e);
+		// 	return null;
+		// }
+		return null;
 	}
 
 	public Page<Interview> findAll(Pageable page) {
