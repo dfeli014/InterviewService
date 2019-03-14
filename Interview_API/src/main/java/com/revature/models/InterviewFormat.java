@@ -74,5 +74,13 @@ public class InterviewFormat {
 		return true;
 	}
 	
+
+	@Override
+	public String toString() {
+		return "{" +
+			" id='" + getId() + "'" +
+			", formatDesc='" + getFormatDesc() + "'" +
+			"}";
+	}
 	
 }

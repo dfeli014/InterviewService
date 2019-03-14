@@ -2,13 +2,13 @@ package com.revature.services;
 
 import java.util.List;
 
+import com.revature.dtos.AssociateInterview;
+import com.revature.dtos.NewAssociateInput;
 import com.revature.dtos.NewInterviewData;
+import com.revature.models.Interview;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import com.revature.dtos.AssociateInterview;
-import com.revature.models.Interview;
 
 public interface InterviewService {
 
@@ -18,6 +18,8 @@ public interface InterviewService {
 	
 	List<Interview> findAll();
 	Interview addNewInterview(NewInterviewData i);
+	Interview addAssociateInput(NewAssociateInput a);
+	Interview findById(int i);
 	Page<Interview> findAll(Pageable page);
 	Page<AssociateInterview> findInterviewsPerAssociate(Pageable page);
 

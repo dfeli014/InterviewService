@@ -37,7 +37,7 @@ public class Interview {
 	@JoinColumn(name = "interview_feedback")
 	private InterviewFeedback feedback;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "associate_input")
 	private AssociateInput associateInput;
 		
@@ -218,4 +218,18 @@ public class Interview {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "{" +
+			" id='" + getId() + "'" +
+			", managerId='" + getManagerId() + "'" +
+			", associateId='" + getAssociateId() + "'" +
+			", scheduled='" + getScheduled() + "'" +
+			", notified='" + getNotified() + "'" +
+			", reviewed='" + getReviewed() + "'" +
+			", place='" + getPlace() + "'" +
+			", feedback='" + getFeedback() + "'" +
+			", associateInput='" + getAssociateInput() + "'" +
+			"}";
+	}
 }
