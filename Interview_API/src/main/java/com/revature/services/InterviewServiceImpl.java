@@ -136,7 +136,7 @@ public class InterviewServiceImpl implements InterviewService {
 		System.out.println("List created");
 		for(AssociateInterview A: associates) {
 			try{
-				User U = userClient.findById(A.getAssociateId());
+				User U = userClient.findByEmail(A.getAssociateEmail()).getBody();
 				String Name = U.getFirstName();
 				if(Name=="") {
 					Name=U.getLastName();
@@ -206,16 +206,16 @@ public class InterviewServiceImpl implements InterviewService {
 	@Override
 	public List<User> getAssociateNeedFeedback() {
 		List<Interview> interviews = interviewRepo.findAll();
-		Set<Integer> needFeedback = new TreeSet<Integer>();
+		Set<String> needFeedback = new TreeSet<String>();
 		List<User> associates = new ArrayList<User>();
 		
 		for(Interview I: interviews) {
 			if(I.getFeedback() != null && I.getFeedback().getFeedbackDelivered() == null) {
-				needFeedback.add(I.getAssociateId());
+				needFeedback.add(I.getAssociateEmail());
 			}
 		}
-		for(Integer N: needFeedback) {
-			associates.add(userClient.findById(N));
+		for(String N: needFeedback) {
+			associates.add(userClient.findByEmail(N).getBody());
 		}
 		return associates;
 	}
