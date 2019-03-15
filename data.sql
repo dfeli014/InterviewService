@@ -53,8 +53,8 @@ begin transaction;
 	/*Level 2 Tables*/
 		create table interview (
 			interview_id                     serial    not null unique,
-			manager_id                       integer   not null,
-			associate_id                     integer   not null,
+			manager_email                    integer   not null,
+			associate_email                  integer   not null,
 			place                            text      not null,
 			scheduled                        timestamp not null,        --Manager told the assoc they have an interview scheduled for ${X}
 			notified                         timestamp,                 --Manager says they told the assoc at ${X} that they have an interview
@@ -106,17 +106,17 @@ begin transaction;
 			values ('2019-03-04 12:00:00', true, 1, 4);
 	/*Interview*/
 		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
-			values (1, 1001, 'USF', '2019-02-28 12:00:00', '2019-02-28 14:00:00', '2019-03-01 16:00:00', 1, 1, 1);
+			values ('blake.kruppa@revature.com', '1@gmail.com', 'USF', '2019-02-28 12:00:00', '2019-02-28 14:00:00', '2019-03-01 16:00:00', 1, 1, 1);
 		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
-			values (1, 1002, 'USF', '2019-02-28 12:00:00', '2019-02-28 09:30:00', '2019-03-02 16:00:00', 2, 2, 1);
+			values ('blake.kruppa@revature.com', '2@gmail.com', 'USF', '2019-02-28 12:00:00', '2019-02-28 09:30:00', '2019-03-02 16:00:00', 2, 2, 1);
 		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
-			values (2, 1003, 'Reston', '2019-02-28 12:00:00', '2019-02-27 14:00:00', '2019-03-03 16:00:00', 3, 3, 1);
+			values ('nick.unknown@revature.com', '3@gmail.com', 'Reston', '2019-02-28 12:00:00', '2019-02-27 14:00:00', '2019-03-03 16:00:00', 3, 3, 1);
 		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
-			values (2, 1004, 'Reston', '2019-02-28 12:00:00', '2019-02-28 14:00:00', '2019-03-04 16:00:00', 4, 4, 2);
+			values ('nick.unknown@revature.com', '4@gmail.com', 'Reston', '2019-02-28 12:00:00', '2019-02-28 14:00:00', '2019-03-04 16:00:00', 4, 4, 2);
 		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
-			values (3, 1005, 'USF', '2019-02-28 12:00:00', '2019-02-27 12:00:00', null, 5, null, 2);
+			values ('westley.droptables@revature.com', '5@gmail.com', 'USF', '2019-02-28 12:00:00', '2019-02-27 12:00:00', null, 5, null, 2);
 		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
-			values (3, 1006, 'USF', '2019-02-28 12:00:00', '2019-02-28 14:00:00', null, null, null, 2);
+			values ('westley.droptables@revature.com', '6@gmail.com', 'USF', '2019-02-28 12:00:00', '2019-02-28 14:00:00', null, null, null, 2);
 /*End Insert Data*/
 
 /*Begin Role Permissions*/
