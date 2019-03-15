@@ -21,11 +21,12 @@ public interface InterviewService {
 	Interview update(Interview i);
 	Interview delete(Interview i);
 	Interview findById(int id);
+	Interview findByAssociateEmail(String s);
+	Interview findByManagerEmail(String s);
 	
 	List<Interview> findAll();
 	Interview addNewInterview(NewInterviewData i);
 	Interview addAssociateInput(NewAssociateInput a);
-	Interview findById(int i);
 	Page<Interview> findAll(Pageable page);
 	List<AssociateInterview> findInterviewsPerAssociate();
 	Page<AssociateInterview> findInterviewsPerAssociate(Pageable page);
