@@ -53,8 +53,8 @@ begin transaction;
 	/*Level 2 Tables*/
 		create table interview (
 			interview_id                     serial    not null unique,
-			manager_id                       integer   not null,
-			associate_id                     integer   not null,
+			manager_email                    text      not null,
+			associate_email                  text      not null,
 			place                            text      not null,
 			scheduled                        timestamp not null,        --Manager told the assoc they have an interview scheduled for ${X}
 			notified                         timestamp,                 --Manager says they told the assoc at ${X} that they have an interview
@@ -105,18 +105,18 @@ begin transaction;
 		insert into associate_input (received_notifications, description_provided, interview_format, proposed_format)
 			values ('2019-03-04 12:00:00', true, 1, 4);
 	/*Interview*/
-		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
-			values (1, 1001, 'USF', '2019-02-28 12:00:00', '2019-02-28 14:00:00', '2019-03-01 16:00:00', 1, 1, 1);
-		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
-			values (1, 1002, 'USF', '2019-02-28 12:00:00', '2019-02-28 09:30:00', '2019-03-02 16:00:00', 2, 2, 1);
-		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
-			values (2, 1003, 'Reston', '2019-02-28 12:00:00', '2019-02-27 14:00:00', '2019-03-03 16:00:00', 3, 3, 1);
-		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
-			values (2, 1004, 'Reston', '2019-02-28 12:00:00', '2019-02-28 14:00:00', '2019-03-04 16:00:00', 4, 4, 2);
-		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
-			values (3, 1005, 'USF', '2019-02-28 12:00:00', '2019-02-27 12:00:00', null, 5, null, 2);
-		insert into interview (manager_id, associate_id, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
-			values (3, 1006, 'USF', '2019-02-28 12:00:00', '2019-02-28 14:00:00', null, null, null, 2);
+		insert into interview (manager_email, associate_email, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
+			values ('blake.kruppa@revature.com', 'abatson94@gmail.com', 'USF', '2019-02-28 12:00:00', '2019-02-28 14:00:00', '2019-03-01 16:00:00', 1, 1, 1);
+		insert into interview (manager_email, associate_email, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
+			values ('blake.kruppa@revature.com', 'kenneth.james.currie@gmail.com', 'USF', '2019-02-28 12:00:00', '2019-02-28 09:30:00', '2019-03-02 16:00:00', 2, 2, 1);
+		insert into interview (manager_email, associate_email, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
+			values ('blake.kruppa@revature.com', 'dfeli014@fiu.edu', 'Reston', '2019-02-28 12:00:00', '2019-02-27 14:00:00', '2019-03-03 16:00:00', 3, 3, 1);
+		insert into interview (manager_email, associate_email, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
+			values ('abatson94@gmail.com', 'mohamedwomar21@gmail.com', 'Reston', '2019-02-28 12:00:00', '2019-02-28 14:00:00', '2019-03-04 16:00:00', 4, 4, 2);
+		insert into interview (manager_email, associate_email, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
+			values ('abatson94@gmail.com', 'goncalvesjohnp@gmail.com', 'USF', '2019-02-28 12:00:00', '2019-02-27 12:00:00', null, 5, null, 2);
+		insert into interview (manager_email, associate_email, place, scheduled, notified, reviewed, interview_feedback, associate_input, client)
+			values ('abatson94@gmail.com', 'loricodes@gmail.com', 'USF', '2019-02-28 12:00:00', '2019-02-28 14:00:00', null, null, null, 2);
 /*End Insert Data*/
 
 /*Begin Role Permissions*/
@@ -129,6 +129,7 @@ begin transaction;
 	GRANT ALL ON SEQUENCE public.associate_input_associate_input_id_seq TO aws_mike;
 	GRANT ALL ON SEQUENCE public.client_client_id_seq TO aws_mike;
 	GRANT ALL ON SEQUENCE public.feedback_status_feedback_status_id_seq TO aws_mike;
+	GRANT ALL ON SEQUENCE public.interview_feedback_interview_feedback_id_seq TO aws_mike;
 	GRANT ALL ON SEQUENCE public.interview_format_interview_format_id_seq TO aws_mike;
 	GRANT ALL ON SEQUENCE public.interview_interview_id_seq TO aws_mike;
 
@@ -141,6 +142,7 @@ begin transaction;
 	GRANT ALL ON SEQUENCE public.associate_input_associate_input_id_seq TO aws_chris;
 	GRANT ALL ON SEQUENCE public.client_client_id_seq TO aws_chris;
 	GRANT ALL ON SEQUENCE public.feedback_status_feedback_status_id_seq TO aws_chris;
+	GRANT ALL ON SEQUENCE public.interview_feedback_interview_feedback_id_seq TO aws_chris;
 	GRANT ALL ON SEQUENCE public.interview_format_interview_format_id_seq TO aws_chris;
 	GRANT ALL ON SEQUENCE public.interview_interview_id_seq TO aws_chris;
 
@@ -153,6 +155,7 @@ begin transaction;
 	GRANT ALL ON SEQUENCE public.associate_input_associate_input_id_seq TO aws_kenneth;
 	GRANT ALL ON SEQUENCE public.client_client_id_seq TO aws_kenneth;
 	GRANT ALL ON SEQUENCE public.feedback_status_feedback_status_id_seq TO aws_kenneth;
+	GRANT ALL ON SEQUENCE public.interview_feedback_interview_feedback_id_seq TO aws_kenneth;
 	GRANT ALL ON SEQUENCE public.interview_format_interview_format_id_seq TO aws_kenneth;
 	GRANT ALL ON SEQUENCE public.interview_interview_id_seq TO aws_kenneth;
 
@@ -165,6 +168,7 @@ begin transaction;
 	GRANT ALL ON SEQUENCE public.associate_input_associate_input_id_seq TO aws_peter;
 	GRANT ALL ON SEQUENCE public.client_client_id_seq TO aws_peter;
 	GRANT ALL ON SEQUENCE public.feedback_status_feedback_status_id_seq TO aws_peter;
+	GRANT ALL ON SEQUENCE public.interview_feedback_interview_feedback_id_seq TO aws_peter;
 	GRANT ALL ON SEQUENCE public.interview_format_interview_format_id_seq TO aws_peter;
 	GRANT ALL ON SEQUENCE public.interview_interview_id_seq TO aws_peter;
 
@@ -177,6 +181,7 @@ begin transaction;
 	GRANT ALL ON SEQUENCE public.associate_input_associate_input_id_seq TO aws_dom;
 	GRANT ALL ON SEQUENCE public.client_client_id_seq TO aws_dom;
 	GRANT ALL ON SEQUENCE public.feedback_status_feedback_status_id_seq TO aws_dom;
+	GRANT ALL ON SEQUENCE public.interview_feedback_interview_feedback_id_seq TO aws_dom;
 	GRANT ALL ON SEQUENCE public.interview_format_interview_format_id_seq TO aws_dom;
 	GRANT ALL ON SEQUENCE public.interview_interview_id_seq TO aws_dom;
 
@@ -189,6 +194,7 @@ begin transaction;
 	GRANT ALL ON SEQUENCE public.associate_input_associate_input_id_seq TO aws_mileena;
 	GRANT ALL ON SEQUENCE public.client_client_id_seq TO aws_mileena;
 	GRANT ALL ON SEQUENCE public.feedback_status_feedback_status_id_seq TO aws_mileena;
+	GRANT ALL ON SEQUENCE public.interview_feedback_interview_feedback_id_seq TO aws_mileena;
 	GRANT ALL ON SEQUENCE public.interview_format_interview_format_id_seq TO aws_mileena;
 	GRANT ALL ON SEQUENCE public.interview_interview_id_seq TO aws_mileena;
 
@@ -201,6 +207,7 @@ begin transaction;
 	GRANT ALL ON SEQUENCE public.associate_input_associate_input_id_seq TO aws_ben;
 	GRANT ALL ON SEQUENCE public.client_client_id_seq TO aws_ben;
 	GRANT ALL ON SEQUENCE public.feedback_status_feedback_status_id_seq TO aws_ben;
+	GRANT ALL ON SEQUENCE public.interview_feedback_interview_feedback_id_seq TO aws_ben;
 	GRANT ALL ON SEQUENCE public.interview_format_interview_format_id_seq TO aws_ben;
 	GRANT ALL ON SEQUENCE public.interview_interview_id_seq TO aws_ben;
 	/*End Role Permissions*/
