@@ -264,4 +264,14 @@ public class InterviewServiceImpl implements InterviewService {
 		I.setReviewed(new Date(System.currentTimeMillis()));
 		return interviewRepo.save(I);
 	}
+
+	@Override
+	public Interview findByAssociateEmail(String s) {
+		return null;
+	}
+
+	@Override
+	public Interview findByManagerEmail(String s) {
+		return null;
+	}
 }

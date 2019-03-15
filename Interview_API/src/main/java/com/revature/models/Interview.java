@@ -1,6 +1,7 @@
 package com.revature.models;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,10 +23,10 @@ public class Interview {
 	@Column(name = "interview_id")
 	private int id;
 	
-	@Column(name = "manager_id")
-	private int managerId;
-	@Column(name = "associate_id")
-	private int associateId;
+	@Column(name = "manager_email")
+	private String managerEmail;
+	@Column(name = "associate_email")
+	private String associateEmail;
 	
 	private Date scheduled;
 	private Date notified;
@@ -47,13 +48,10 @@ public class Interview {
 		// TODO Auto-generated constructor stub
 	}
 
-
-	public Interview(int id, int managerId, int associateId, Date scheduled, Date notified, Date reviewed, String place,
-			InterviewFeedback feedback, AssociateInput associateInput) {
-		super();
+	public Interview(int id, String managerEmail, String associateEmail, Date scheduled, Date notified, Date reviewed, String place, InterviewFeedback feedback, AssociateInput associateInput) {
 		this.id = id;
-		this.managerId = managerId;
-		this.associateId = associateId;
+		this.managerEmail = managerEmail;
+		this.associateEmail = associateEmail;
 		this.scheduled = scheduled;
 		this.notified = notified;
 		this.reviewed = reviewed;
@@ -62,168 +60,100 @@ public class Interview {
 		this.associateInput = associateInput;
 	}
 
-
 	public int getId() {
-		return id;
+		return this.id;
 	}
-
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-
-	public int getManagerId() {
-		return managerId;
+	public String getManagerEmail() {
+		return this.managerEmail;
 	}
 
-
-	public void setManagerId(int managerId) {
-		this.managerId = managerId;
+	public void setManagerEmail(String managerEmail) {
+		this.managerEmail = managerEmail;
 	}
 
-
-	public int getAssociateId() {
-		return associateId;
+	public String getAssociateEmail() {
+		return this.associateEmail;
 	}
 
-
-	public void setAssociateId(int associateId) {
-		this.associateId = associateId;
+	public void setAssociateEmail(String associateEmail) {
+		this.associateEmail = associateEmail;
 	}
-
 
 	public Date getScheduled() {
-		return scheduled;
+		return this.scheduled;
 	}
-
 
 	public void setScheduled(Date scheduled) {
 		this.scheduled = scheduled;
 	}
 
-
 	public Date getNotified() {
-		return notified;
+		return this.notified;
 	}
-
 
 	public void setNotified(Date notified) {
 		this.notified = notified;
 	}
 
-
 	public Date getReviewed() {
-		return reviewed;
+		return this.reviewed;
 	}
-
 
 	public void setReviewed(Date reviewed) {
 		this.reviewed = reviewed;
 	}
 
-
 	public String getPlace() {
-		return place;
+		return this.place;
 	}
-
 
 	public void setPlace(String place) {
 		this.place = place;
 	}
 
-
 	public InterviewFeedback getFeedback() {
-		return feedback;
+		return this.feedback;
 	}
-
 
 	public void setFeedback(InterviewFeedback feedback) {
 		this.feedback = feedback;
 	}
 
-
 	public AssociateInput getAssociateInput() {
-		return associateInput;
+		return this.associateInput;
 	}
-
 
 	public void setAssociateInput(AssociateInput associateInput) {
 		this.associateInput = associateInput;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+			return true;
+		if (!(o instanceof Interview)) {
+			return false;
+		}
+		Interview interview = (Interview) o;
+		return id == interview.id && Objects.equals(managerEmail, interview.managerEmail) && Objects.equals(associateEmail, interview.associateEmail) && Objects.equals(scheduled, interview.scheduled) && Objects.equals(notified, interview.notified) && Objects.equals(reviewed, interview.reviewed) && Objects.equals(place, interview.place) && Objects.equals(feedback, interview.feedback) && Objects.equals(associateInput, interview.associateInput);
+	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + associateId;
-		result = prime * result + ((associateInput == null) ? 0 : associateInput.hashCode());
-		result = prime * result + ((feedback == null) ? 0 : feedback.hashCode());
-		result = prime * result + id;
-		result = prime * result + managerId;
-		result = prime * result + ((notified == null) ? 0 : notified.hashCode());
-		result = prime * result + ((place == null) ? 0 : place.hashCode());
-		result = prime * result + ((reviewed == null) ? 0 : reviewed.hashCode());
-		result = prime * result + ((scheduled == null) ? 0 : scheduled.hashCode());
-		return result;
-	}
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Interview other = (Interview) obj;
-		if (associateId != other.associateId)
-			return false;
-		if (associateInput == null) {
-			if (other.associateInput != null)
-				return false;
-		} else if (!associateInput.equals(other.associateInput))
-			return false;
-		if (feedback == null) {
-			if (other.feedback != null)
-				return false;
-		} else if (!feedback.equals(other.feedback))
-			return false;
-		if (id != other.id)
-			return false;
-		if (managerId != other.managerId)
-			return false;
-		if (notified == null) {
-			if (other.notified != null)
-				return false;
-		} else if (!notified.equals(other.notified))
-			return false;
-		if (place == null) {
-			if (other.place != null)
-				return false;
-		} else if (!place.equals(other.place))
-			return false;
-		if (reviewed == null) {
-			if (other.reviewed != null)
-				return false;
-		} else if (!reviewed.equals(other.reviewed))
-			return false;
-		if (scheduled == null) {
-			if (other.scheduled != null)
-				return false;
-		} else if (!scheduled.equals(other.scheduled))
-			return false;
-		return true;
+		return Objects.hash(id, managerEmail, associateEmail, scheduled, notified, reviewed, place, feedback, associateInput);
 	}
 
 	@Override
 	public String toString() {
 		return "{" +
 			" id='" + getId() + "'" +
-			", managerId='" + getManagerId() + "'" +
-			", associateId='" + getAssociateId() + "'" +
+			", managerEmail='" + getManagerEmail() + "'" +
+			", associateEmail='" + getAssociateEmail() + "'" +
 			", scheduled='" + getScheduled() + "'" +
 			", notified='" + getNotified() + "'" +
 			", reviewed='" + getReviewed() + "'" +
@@ -232,4 +162,6 @@ public class Interview {
 			", associateInput='" + getAssociateInput() + "'" +
 			"}";
 	}
+
+
 }
