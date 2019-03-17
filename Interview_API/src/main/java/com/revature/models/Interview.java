@@ -1,6 +1,7 @@
 package com.revature.models;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -51,10 +52,7 @@ public class Interview {
 		// TODO Auto-generated constructor stub
 	}
 
-
-	public Interview(int id, String managerEmail, String associateEmail, Date scheduled, Date notified, Date reviewed, String place,
-			InterviewFeedback feedback, AssociateInput associateInput, Client client) {
-		super();
+	public Interview(int id, String managerEmail, String associateEmail, Date scheduled, Date notified, Date reviewed, String place, InterviewFeedback feedback, AssociateInput associateInput) {
 		this.id = id;
 		this.managerEmail = managerEmail;
 		this.associateEmail = associateEmail;
@@ -67,91 +65,73 @@ public class Interview {
 		this.client = client;
 	}
 
-
 	public int getId() {
-		return id;
+		return this.id;
 	}
-
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-
 	public String getManagerEmail() {
-		return managerEmail;
+		return this.managerEmail;
 	}
-
 
 	public void setManagerEmail(String managerEmail) {
 		this.managerEmail = managerEmail;
 	}
 
-
 	public String getAssociateEmail() {
-		return associateEmail;
+		return this.associateEmail;
 	}
-
 
 	public void setAssociateEmail(String associateEmail) {
 		this.associateEmail = associateEmail;
 	}
 
-
 	public Date getScheduled() {
-		return scheduled;
+		return this.scheduled;
 	}
-
 
 	public void setScheduled(Date scheduled) {
 		this.scheduled = scheduled;
 	}
 
-
 	public Date getNotified() {
-		return notified;
+		return this.notified;
 	}
-
 
 	public void setNotified(Date notified) {
 		this.notified = notified;
 	}
 
-
 	public Date getReviewed() {
-		return reviewed;
+		return this.reviewed;
 	}
-
 
 	public void setReviewed(Date reviewed) {
 		this.reviewed = reviewed;
 	}
 
-
 	public String getPlace() {
-		return place;
+		return this.place;
 	}
-
 
 	public void setPlace(String place) {
 		this.place = place;
 	}
 
-
 	public InterviewFeedback getFeedback() {
-		return feedback;
+		return this.feedback;
 	}
-
 
 	public void setFeedback(InterviewFeedback feedback) {
 		this.feedback = feedback;
 	}
 
-
 	public AssociateInput getAssociateInput() {
-		return associateInput;
+		return this.associateInput;
 	}
-
 
 	public void setAssociateInput(AssociateInput associateInput) {
 		this.associateInput = associateInput;
@@ -179,7 +159,6 @@ public class Interview {
 		result = prime * result + ((scheduled == null) ? 0 : scheduled.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -244,4 +223,6 @@ public class Interview {
 			", client='" + getClient() + "'" +
 			"}";
 	}
+
+
 }

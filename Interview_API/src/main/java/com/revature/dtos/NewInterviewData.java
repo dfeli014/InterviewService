@@ -1,29 +1,16 @@
 package com.revature.dtos;
 
 public class NewInterviewData {
-	private int managerId;
-  	private String firstName;
-	private String lastName;
+	private String managerEmail;
+  	private int associateId;
 	private long date;
 	private String location;
-	private String format;
-	public NewInterviewData(int managerId, String firstName, String lastName, long date, String location, String format) {
-		super();
-		this.managerId = managerId;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.date = date;
-		this.location = location;
-		this.format = format;
+	
+	public String getManagerEmail() {
+		return managerEmail;
 	}
-	public int getManagerId() {
-		return managerId;
-	}
-	public String getFirstName() {
-		return firstName;
-	}
-	public String getLastName() {
-		return lastName;
+	public int getAssociateId() {
+		return associateId;
 	}
 	public long getDate() {
 		return date;
@@ -31,19 +18,39 @@ public class NewInterviewData {
 	public String getLocation() {
 		return location;
 	}
-	public String getFormat() {
-		return format;
+	public NewInterviewData() {
+		super();
+	}
+	
+	
+	
+	public void setManagerEmail(String managerEmail) {
+		this.managerEmail = managerEmail;
+	}
+	public void setAssociateId(int associateId) {
+		this.associateId = associateId;
+	}
+	public void setDate(long date) {
+		this.date = date;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public NewInterviewData(String managerEmail, int associateId, long date, String location) {
+		super();
+		this.managerEmail = managerEmail;
+		this.associateId = associateId;
+		this.date = date;
+		this.location = location;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + associateId;
 		result = prime * result + (int) (date ^ (date >>> 32));
-		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + ((format == null) ? 0 : format.hashCode());
-		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
-		result = prime * result + managerId;
+		result = prime * result + ((managerEmail == null) ? 0 : managerEmail.hashCode());
 		return result;
 	}
 	@Override
@@ -55,37 +62,26 @@ public class NewInterviewData {
 		if (getClass() != obj.getClass())
 			return false;
 		NewInterviewData other = (NewInterviewData) obj;
+		if (associateId != other.associateId)
+			return false;
 		if (date != other.date)
-			return false;
-		if (firstName == null) {
-			if (other.firstName != null)
-				return false;
-		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (format == null) {
-			if (other.format != null)
-				return false;
-		} else if (!format.equals(other.format))
-			return false;
-		if (lastName == null) {
-			if (other.lastName != null)
-				return false;
-		} else if (!lastName.equals(other.lastName))
 			return false;
 		if (location == null) {
 			if (other.location != null)
 				return false;
 		} else if (!location.equals(other.location))
 			return false;
-		if (managerId != other.managerId)
+		if (managerEmail == null) {
+			if (other.managerEmail != null)
+				return false;
+		} else if (!managerEmail.equals(other.managerEmail))
 			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
-		return "NewInterviewData [managerId=" + managerId + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", date=" + date + ", location=" + location + ", format=" + format + "]";
+		return "NewInterviewData [managerEmail=" + managerEmail + ", associateId=" + associateId + ", date=" + date
+				+ ", location=" + location + "]";
 	}
-	
 	
 }

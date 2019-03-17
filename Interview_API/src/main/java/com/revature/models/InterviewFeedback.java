@@ -24,6 +24,14 @@ public class InterviewFeedback {
 	@Column(name = "interview_feedback_id")
 	private int id;
 	
+	public Date getFeedbackDelivered() {
+		return feedbackDelivered;
+	}
+
+	public void setFeedbackDelivered(Date feedbackDelivered) {
+		this.feedbackDelivered = feedbackDelivered;
+	}
+
 	@Column(name = "feedback_requested")
 	private Date feedbackRequested;
 	private String feedback;
@@ -146,5 +154,5 @@ public class InterviewFeedback {
 			return false;
 		return true;
 	}
-
+	
 }
