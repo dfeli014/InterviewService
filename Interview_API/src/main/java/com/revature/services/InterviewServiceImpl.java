@@ -74,8 +74,9 @@ public class InterviewServiceImpl implements InterviewService {
 	public Interview addNewInterview(NewInterviewData i) {
 		int associateId = 1;// fetch user from other db
 		Date scheduled = new Date(i.getDate());// TODO: check this is valid date
-		Interview newInterview = new Interview(0, i.getManagerId(), associateId, scheduled, null, null, i.getLocation(),
-				null, null);
+		Client c = new Client();
+		Interview newInterview = new Interview(0, i.getManagerEmail(), i.getAssociateEmail(), scheduled, null, null, i.getLocation(),
+				null, null, c);
 
 		return save(newInterview);
 	}

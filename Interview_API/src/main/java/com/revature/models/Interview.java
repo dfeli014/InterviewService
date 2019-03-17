@@ -22,10 +22,10 @@ public class Interview {
 	@Column(name = "interview_id")
 	private int id;
 	
-	@Column(name = "manager_id")
-	private int managerId;
-	@Column(name = "associate_id")
-	private int associateId;
+	@Column(name = "manager_email")
+	private String managerEmail;
+	@Column(name = "associate_email")
+	private String associateEmail;
 	
 	private Date scheduled;
 	private Date notified;
@@ -40,6 +40,10 @@ public class Interview {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "associate_input")
 	private AssociateInput associateInput;
+
+	@OneToOne
+	@JoinColumn(name = "client")
+	private Client client;
 		
 
 	public Interview() {
@@ -48,18 +52,19 @@ public class Interview {
 	}
 
 
-	public Interview(int id, int managerId, int associateId, Date scheduled, Date notified, Date reviewed, String place,
-			InterviewFeedback feedback, AssociateInput associateInput) {
+	public Interview(int id, String managerEmail, String associateEmail, Date scheduled, Date notified, Date reviewed, String place,
+			InterviewFeedback feedback, AssociateInput associateInput, Client client) {
 		super();
 		this.id = id;
-		this.managerId = managerId;
-		this.associateId = associateId;
+		this.managerEmail = managerEmail;
+		this.associateEmail = associateEmail;
 		this.scheduled = scheduled;
 		this.notified = notified;
 		this.reviewed = reviewed;
 		this.place = place;
 		this.feedback = feedback;
 		this.associateInput = associateInput;
+		this.client = client;
 	}
 
 
@@ -73,23 +78,23 @@ public class Interview {
 	}
 
 
-	public int getManagerId() {
-		return managerId;
+	public String getManagerEmail() {
+		return managerEmail;
 	}
 
 
-	public void setManagerId(int managerId) {
-		this.managerId = managerId;
+	public void setManagerEmail(String managerEmail) {
+		this.managerEmail = managerEmail;
 	}
 
 
-	public int getAssociateId() {
-		return associateId;
+	public String getAssociateEmail() {
+		return associateEmail;
 	}
 
 
-	public void setAssociateId(int associateId) {
-		this.associateId = associateId;
+	public void setAssociateEmail(String associateEmail) {
+		this.associateEmail = associateEmail;
 	}
 
 
@@ -152,16 +157,22 @@ public class Interview {
 		this.associateInput = associateInput;
 	}
 
+	public Client getClient() {
+		return this.client;
+	}
+
+	public void setClient(Client c) {
+		this.client = c;
+	}
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + associateId;
 		result = prime * result + ((associateInput == null) ? 0 : associateInput.hashCode());
 		result = prime * result + ((feedback == null) ? 0 : feedback.hashCode());
 		result = prime * result + id;
-		result = prime * result + managerId;
 		result = prime * result + ((notified == null) ? 0 : notified.hashCode());
 		result = prime * result + ((place == null) ? 0 : place.hashCode());
 		result = prime * result + ((reviewed == null) ? 0 : reviewed.hashCode());
@@ -179,7 +190,7 @@ public class Interview {
 		if (getClass() != obj.getClass())
 			return false;
 		Interview other = (Interview) obj;
-		if (associateId != other.associateId)
+		if (associateEmail != other.associateEmail)
 			return false;
 		if (associateInput == null) {
 			if (other.associateInput != null)
@@ -193,7 +204,7 @@ public class Interview {
 			return false;
 		if (id != other.id)
 			return false;
-		if (managerId != other.managerId)
+		if (managerEmail != other.managerEmail)
 			return false;
 		if (notified == null) {
 			if (other.notified != null)
@@ -222,14 +233,15 @@ public class Interview {
 	public String toString() {
 		return "{" +
 			" id='" + getId() + "'" +
-			", managerId='" + getManagerId() + "'" +
-			", associateId='" + getAssociateId() + "'" +
+			", managerEmail='" + getManagerEmail() + "'" +
+			", associateEmail='" + getAssociateEmail() + "'" +
 			", scheduled='" + getScheduled() + "'" +
 			", notified='" + getNotified() + "'" +
 			", reviewed='" + getReviewed() + "'" +
 			", place='" + getPlace() + "'" +
 			", feedback='" + getFeedback() + "'" +
 			", associateInput='" + getAssociateInput() + "'" +
+			", client='" + getClient() + "'" +
 			"}";
 	}
 }
