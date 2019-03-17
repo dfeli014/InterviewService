@@ -41,6 +41,10 @@ public class Interview {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "associate_input")
 	private AssociateInput associateInput;
+
+	@OneToOne
+	@JoinColumn(name = "client")
+	private Client client;
 		
 
 	public Interview() {
@@ -58,6 +62,7 @@ public class Interview {
 		this.place = place;
 		this.feedback = feedback;
 		this.associateInput = associateInput;
+		this.client = client;
 	}
 
 	public int getId() {
@@ -132,20 +137,75 @@ public class Interview {
 		this.associateInput = associateInput;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (o == this)
-			return true;
-		if (!(o instanceof Interview)) {
-			return false;
-		}
-		Interview interview = (Interview) o;
-		return id == interview.id && Objects.equals(managerEmail, interview.managerEmail) && Objects.equals(associateEmail, interview.associateEmail) && Objects.equals(scheduled, interview.scheduled) && Objects.equals(notified, interview.notified) && Objects.equals(reviewed, interview.reviewed) && Objects.equals(place, interview.place) && Objects.equals(feedback, interview.feedback) && Objects.equals(associateInput, interview.associateInput);
+	public Client getClient() {
+		return this.client;
 	}
+
+	public void setClient(Client c) {
+		this.client = c;
+	}
+
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, managerEmail, associateEmail, scheduled, notified, reviewed, place, feedback, associateInput);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((associateInput == null) ? 0 : associateInput.hashCode());
+		result = prime * result + ((feedback == null) ? 0 : feedback.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((notified == null) ? 0 : notified.hashCode());
+		result = prime * result + ((place == null) ? 0 : place.hashCode());
+		result = prime * result + ((reviewed == null) ? 0 : reviewed.hashCode());
+		result = prime * result + ((scheduled == null) ? 0 : scheduled.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Interview other = (Interview) obj;
+		if (associateEmail != other.associateEmail)
+			return false;
+		if (associateInput == null) {
+			if (other.associateInput != null)
+				return false;
+		} else if (!associateInput.equals(other.associateInput))
+			return false;
+		if (feedback == null) {
+			if (other.feedback != null)
+				return false;
+		} else if (!feedback.equals(other.feedback))
+			return false;
+		if (id != other.id)
+			return false;
+		if (managerEmail != other.managerEmail)
+			return false;
+		if (notified == null) {
+			if (other.notified != null)
+				return false;
+		} else if (!notified.equals(other.notified))
+			return false;
+		if (place == null) {
+			if (other.place != null)
+				return false;
+		} else if (!place.equals(other.place))
+			return false;
+		if (reviewed == null) {
+			if (other.reviewed != null)
+				return false;
+		} else if (!reviewed.equals(other.reviewed))
+			return false;
+		if (scheduled == null) {
+			if (other.scheduled != null)
+				return false;
+		} else if (!scheduled.equals(other.scheduled))
+			return false;
+		return true;
 	}
 
 	@Override
@@ -160,6 +220,7 @@ public class Interview {
 			", place='" + getPlace() + "'" +
 			", feedback='" + getFeedback() + "'" +
 			", associateInput='" + getAssociateInput() + "'" +
+			", client='" + getClient() + "'" +
 			"}";
 	}
 

@@ -35,6 +35,7 @@ import com.revature.feign.IUserClient;
 import com.revature.dtos.AssociateInterview;
 import com.revature.dtos.NewAssociateInput;
 import com.revature.models.AssociateInput;
+import com.revature.models.Client;
 import com.revature.models.Interview;
 import com.revature.repos.AssociateInputRepo;
 import com.revature.dtos.FeedbackData;
@@ -83,8 +84,7 @@ public class InterviewServiceImpl implements InterviewService {
 	}
 
 
-	public Interview addNewInterview(NewInterviewData i) {
-		
+	public Interview addNewInterview(NewInterviewData i) {		
 		try {
 			String managerEmail = cognitoUtil.getRequesterClaims().getEmail();
 			String associateEmail = i.getAssociateEmail();
