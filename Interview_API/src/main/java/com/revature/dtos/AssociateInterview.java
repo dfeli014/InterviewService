@@ -3,30 +3,30 @@ package com.revature.dtos;
 import com.revature.models.Interview;
 
 public class AssociateInterview implements Comparable<AssociateInterview>{
-	private int associateId;
+	private String associateEmail;
 	private int interviewCount;
-  private String AssociateName;
+	private String AssociateName;
 	
 	public AssociateInterview() {
-		associateId = 0;
+		associateEmail = "";
 		interviewCount = 1;
 		AssociateName = "";
 	}
 
-	public AssociateInterview(int associateId) {
+	public AssociateInterview(String associateEmail) {
 		interviewCount = 1;
-		this.associateId = associateId;
+		this.associateEmail = associateEmail;
 		AssociateName = "";
 	}
 
 	public AssociateInterview(Interview I) {
 		interviewCount = 1;
-		// associateId = I.getAssociateEmail();
+		associateEmail = I.getAssociateEmail();
 		AssociateName = "";
 	}
 
-	public int getAssociateId() {
-		return associateId;
+	public String getAssociateEmail() {
+		return associateEmail;
 	}
 
 	public int getInterviewCount() {
@@ -47,15 +47,14 @@ public class AssociateInterview implements Comparable<AssociateInterview>{
 
 	@Override
 	public int compareTo(AssociateInterview o) {
-		// TODO Auto-generated method stub
-		return o.getAssociateId()-this.associateId;
+		return this.associateEmail.compareTo(o.getAssociateEmail());
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + associateId;
+		result = prime * result + ((associateEmail == null) ? 0 : associateEmail.hashCode());
 		return result;
 	}
 
@@ -68,14 +67,17 @@ public class AssociateInterview implements Comparable<AssociateInterview>{
 		if (getClass() != obj.getClass())
 			return false;
 		AssociateInterview other = (AssociateInterview) obj;
-		if (associateId != other.associateId)
+		if (associateEmail == null) {
+			if (other.associateEmail != null)
+				return false;
+		} else if (!associateEmail.equals(other.associateEmail))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "AssociateInterview [associateId=" + associateId + ", interviewCount=" + interviewCount
+		return "AssociateInterview [associateEmail=" + associateEmail + ", interviewCount=" + interviewCount
 				+ ", AssociateName=" + AssociateName + "]";
 	}
 }

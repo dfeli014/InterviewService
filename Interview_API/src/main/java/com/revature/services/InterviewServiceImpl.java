@@ -28,6 +28,7 @@ import com.netflix.discovery.shared.Application;
 import com.revature.cognito.dtos.CognitoRegisterBody;
 import com.revature.cognito.dtos.CognitoRegisterResponse;
 import com.revature.cognito.dtos.CognitoTokenClaims;
+import com.revature.cognito.utils.CognitoUtil;
 import com.revature.dtos.NewInterviewData;
 import com.revature.feign.IUserClient;
 
@@ -58,6 +59,9 @@ public class InterviewServiceImpl implements InterviewService {
 	@Autowired
 	private IUserClient userClient;
 
+	@Autowired
+	private CognitoUtil cognitoUtil;
+
 	private FeedbackRepo feedbackRepo;
 	
 	public Interview save(Interview i) {
@@ -79,43 +83,21 @@ public class InterviewServiceImpl implements InterviewService {
 		return interviewRepo.findAll();
 	}
 
-	
-	public Interview addNewInterview(NewInterviewData i) {
-		int associateId = 1;// fetch user from other db
-		Date scheduled = new Date(i.getDate());// TODO: check this is valid date
-		Client c = new Client();
-		// Interview newInterview = new Interview(0, i.getManagerEmail(), i.getAssociateEmail(), scheduled, null, null, i.getLocation(),
-				// null, null, c);
-		// int associateId = 1;// fetch user from other db
-		// Date scheduled = new Date(i.getDate());// TODO: check this is valid date
-		// Interview newInterview = new Interview(0, i.getManagerId(), associateId, scheduled, null, null, i.getLocation(),
-		// 		null, null);
 
-		// // return save(newInterview);
-		// // int associateId = i.getAssociateId();//TODO: check if id is valid
-		// // Date scheduled = new Date(i.getDate());//TODO: check this is valid date
-		// // int managerId = 0;
-		// System.out.println("userClient");
-		// System.out.println(userClient);
-		// System.out.println("i.getManagerEmail()");
-		// System.out.println(i.getManagerEmail());
-		
-		// try {
-		// 	ResponseEntity<User> res = userClient.findByEmail(i.getManagerEmail());
-		// 	System.out.println("res");
-		// 	System.out.println(res);
-		// 	if(res != null) {
-		// 		managerId = res.getBody().getUserId();
-		// 		Interview newInterview = new Interview(0, managerId, associateId, scheduled, null, null, i.getLocation(), null, null);	
-		// 		return save(newInterview);
-		// 	}
-		// 	else return null;
-		// } catch (Exception e) {
-		// 	System.out.println("exception: " + e);
-		// 	return null;
-		// }
-		return null;
+	public Interview addNewInterview(NewInterviewData i) {		
+		try {
+			String managerEmail = cognitoUtil.getRequesterClaims().getEmail();
+			String associateEmail = i.getAssociateEmail();
+			Date scheduled = new Date(i.getDate());// TODO: check this is valid date
+			String location = i.getLocation();
+			Interview newInterview = new Interview(0, managerEmail, associateEmail, scheduled, null, null, location, null, null);//new Interview(0, managerEmail, associateId, scheduled, null, null, i.getLocation(), null, null);	
+			return save(newInterview);
+		} catch (Exception e) {
+			System.out.println("exception: " + e);
+			return null;
+		}
 	}
+
 
 	public Page<Interview> findAll(Pageable page) {
 		// TODO Auto-generated method stub
@@ -142,7 +124,7 @@ public class InterviewServiceImpl implements InterviewService {
 		System.out.println("List created");
 		for(AssociateInterview A: associates) {
 			try{
-				User U = userClient.findById(A.getAssociateId());
+				User U = userClient.findByEmail(A.getAssociateEmail()).getBody();
 				String Name = U.getFirstName();
 				if(Name=="") {
 					Name=U.getLastName();
@@ -212,16 +194,16 @@ public class InterviewServiceImpl implements InterviewService {
 	@Override
 	public List<User> getAssociateNeedFeedback() {
 		List<Interview> interviews = interviewRepo.findAll();
-		Set<Integer> needFeedback = new TreeSet<Integer>();
+		Set<String> needFeedback = new TreeSet<String>();
 		List<User> associates = new ArrayList<User>();
 		
 		for(Interview I: interviews) {
 			if(I.getFeedback() != null && I.getFeedback().getFeedbackDelivered() == null) {
-				// needFeedback.add(I.getAssociateEmail());
+				needFeedback.add(I.getAssociateEmail());
 			}
 		}
-		for(Integer N: needFeedback) {
-			associates.add(userClient.findById(N));
+		for(String N: needFeedback) {
+			associates.add(userClient.findByEmail(N).getBody());
 		}
 		return associates;
 	}
