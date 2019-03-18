@@ -154,5 +154,14 @@ public class InterviewFeedback {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "InterviewFeedback [id=" + id + ", feedbackRequested=" + feedbackRequested + ", feedback=" + feedback
+				+ ", feedbackReceived=" + feedbackReceived + ", feedbackDelivered=" + feedbackDelivered + ", status="
+				+ status + ", interview=" + interview + "]";
+	}
+	
+	
 	
 }

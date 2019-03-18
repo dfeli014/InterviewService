@@ -10,6 +10,7 @@ import java.util.Arrays;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -242,7 +243,7 @@ public class InterviewController {
 		if(result != null) {
 			return ResponseEntity.ok(interviewService.setFeedback(f));
 		}
-		return (ResponseEntity<Interview>) ResponseEntity.badRequest();
+		return new ResponseEntity<Interview>(HttpStatus.BAD_REQUEST);
 	}
 	
 	@GetMapping("Feedback/InterviewId/{InterviewId}")

@@ -62,6 +62,7 @@ public class InterviewServiceImpl implements InterviewService {
 	@Autowired
 	private CognitoUtil cognitoUtil;
 
+	@Autowired
 	private FeedbackRepo feedbackRepo;
 	
 	public Interview save(Interview i) {
@@ -180,15 +181,17 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
 	public Interview setFeedback(FeedbackData f) {
-		InterviewFeedback interviewFeedback = new InterviewFeedback(0, new Date(f.getFeedbackRequestedDate()), f.getFeedbackText(), new Date(f.getFeedbackReceivedDate()), new FeedbackStatus());
-		System.out.println("interviewFeedback\n" + interviewFeedback);
+		InterviewFeedback interviewFeedback = new InterviewFeedback(0, new Date(f.getFeedbackRequestedDate()), f.getFeedbackText(), new Date(f.getFeedbackReceivedDate()), new FeedbackStatus(1, "Pending"));
+		System.out.println("interviewFeedback\n" + interviewFeedback.toString());
+		System.out.println("interviewStatus\n" + interviewFeedback.getStatus());
 		Interview i = interviewRepo.findById(f.getInterviewId());
 		if(i != null) {
 			interviewFeedback = feedbackRepo.save(interviewFeedback);
 			i.setFeedback(interviewFeedback);	
 			return save(i);
 		}
-		else return null;
+		else 
+			return null;
   }
   
 	@Override
