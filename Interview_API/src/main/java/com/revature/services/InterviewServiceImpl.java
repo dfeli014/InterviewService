@@ -90,7 +90,7 @@ public class InterviewServiceImpl implements InterviewService {
 			String associateEmail = i.getAssociateEmail();
 			Date scheduled = new Date(i.getDate());// TODO: check this is valid date
 			String location = i.getLocation();
-			Interview newInterview = new Interview(0, managerEmail, associateEmail, scheduled, null, null, location, null, null);//new Interview(0, managerEmail, associateId, scheduled, null, null, i.getLocation(), null, null);	
+			Interview newInterview = new Interview(0, managerEmail, associateEmail, scheduled, null, null, location, null, null, new Client(1, "Dell"));//new Interview(0, managerEmail, associateId, scheduled, null, null, i.getLocation(), null, null);	
 			return save(newInterview);
 		} catch (Exception e) {
 			System.out.println("exception: " + e);
