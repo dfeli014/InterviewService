@@ -52,7 +52,7 @@ public class Interview {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Interview(int id, String managerEmail, String associateEmail, Date scheduled, Date notified, Date reviewed, String place, InterviewFeedback feedback, AssociateInput associateInput) {
+	public Interview(int id, String managerEmail, String associateEmail, Date scheduled, Date notified, Date reviewed, String place, InterviewFeedback feedback, AssociateInput associateInput, Client client) {
 		this.id = id;
 		this.managerEmail = managerEmail;
 		this.associateEmail = associateEmail;
