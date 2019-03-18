@@ -42,6 +42,7 @@ import com.revature.models.Interview;
 import com.revature.repos.AssociateInputRepo;
 import com.revature.dtos.FeedbackData;
 import com.revature.dtos.Interview24Hour;
+import com.revature.dtos.InterviewAssociateJobData;
 import com.revature.models.FeedbackStatus;
 import com.revature.models.Interview;
 import com.revature.models.InterviewFeedback;
@@ -353,7 +354,7 @@ public class InterviewServiceImpl implements InterviewService {
 		returning = Arrays.asList(interviewRepo.findAll().size(), countNotified);
         return returning;
     }
-	
+
 	private List<Interview24Hour> getAll24HourNoticeWithoutName(){
 		List<Interview> DataIn = interviewRepo.findAll();
 		System.out.println(DataIn);
@@ -382,6 +383,37 @@ public class InterviewServiceImpl implements InterviewService {
 	
 	public Page<Interview24Hour> getAll24HourNotice(Pageable page) {
 		PageImpl PI = ListToPage.getPage(getAll24HourNotice(), page);
+		return PI;
+	}
+
+	private List<InterviewAssociateJobData> getAllJDNoName(){
+		List<Interview> DataIn = interviewRepo.findAll();
+		System.out.println(DataIn);
+		List<InterviewAssociateJobData> DataOut = new ArrayList<InterviewAssociateJobData>();
+		for(Interview I: DataIn) {
+			DataOut.add(new InterviewAssociateJobData(I));
+		}
+		return DataOut;
+	}
+	
+	public List<InterviewAssociateJobData> getAllJD(){
+		List<InterviewAssociateJobData> Data= getAllJDNoName();
+		
+		for(InterviewAssociateJobData I: Data) {
+			try {
+				User U = userClient.findByEmail(I.getAssocEmail()).getBody();
+				System.out.println(U);
+				I.setAssocName(U.getFirstName()+" "+U.getLastName());
+			} catch (Exception E){
+				System.out.println(E);
+			}
+		}
+		
+		return Data;
+	}
+	
+	public Page<InterviewAssociateJobData> getAllJD(Pageable page) {
+		PageImpl PI = ListToPage.getPage(getAllJD(), page);
 		return PI;
 	}
 	

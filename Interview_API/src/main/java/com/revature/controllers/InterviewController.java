@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.dtos.AssociateInterview;
 import com.revature.dtos.FeedbackData;
 import com.revature.dtos.Interview24Hour;
+import com.revature.dtos.InterviewAssociateJobData;
 import com.revature.models.Interview;
 import com.revature.models.InterviewFeedback;
 import com.revature.models.InterviewFormat;
@@ -206,6 +207,23 @@ public class InterviewController {
         Pageable pageParameters = PageRequest.of(pageNumber, pageSize);
         
         return interviewService.getAll24HourNotice(pageParameters);
+    }
+	
+
+	@GetMapping("reports/interviewJD")
+	public List<InterviewAssociateJobData> getAllJD() {
+        return interviewService.getAllJD();
+    }
+	
+	@GetMapping("reports/interviewJD/page")
+	public Page<InterviewAssociateJobData> getAllJD(
+            @RequestParam(name="pageNumber", defaultValue="0") Integer pageNumber,
+            @RequestParam(name="pageSize", defaultValue="5") Integer pageSize) {
+		// Example url call: ~:8091/reports/getAll24HourNotice/page?pageNumber=0&pageSize=3
+		// The above url will return the 0th page of size 3.
+        Pageable pageParameters = PageRequest.of(pageNumber, pageSize);
+        
+        return interviewService.getAllJD(pageParameters);
     }
 	
 	
