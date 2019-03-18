@@ -159,7 +159,7 @@ public class InterviewFeedback {
 	public String toString() {
 		return "InterviewFeedback [id=" + id + ", feedbackRequested=" + feedbackRequested + ", feedback=" + feedback
 				+ ", feedbackReceived=" + feedbackReceived + ", feedbackDelivered=" + feedbackDelivered + ", status="
-				+ status + ", interview=" + interview + "]";
+				+ status + ", interviewId=" + interview.getId() + "]";
 	}
 	
 	
