@@ -14,7 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.Date;
+import java.io.Console;
+import java.sql.Date;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,7 @@ import com.revature.models.AssociateInput;
 import com.revature.models.Client;
 import com.revature.models.Interview;
 import com.revature.repos.AssociateInputRepo;
+import com.revature.repos.ClientRepo;
 import com.revature.dtos.FeedbackData;
 import com.revature.dtos.Interview24Hour;
 import com.revature.dtos.InterviewAssociateJobData;
@@ -59,6 +61,9 @@ public class InterviewServiceImpl implements InterviewService {
 
 	@Autowired
 	private AssociateInputRepo associateRepo;
+	
+	@Autowired
+	private ClientRepo clientRepo;
 
 	@Autowired
 	private IUserClient userClient;
@@ -89,13 +94,23 @@ public class InterviewServiceImpl implements InterviewService {
 	}
 
 
-	public Interview addNewInterview(NewInterviewData i) {		
+	public Interview addNewInterview(NewInterviewData i) {
 		try {
 			String managerEmail = cognitoUtil.getRequesterClaims().getEmail();
 			String associateEmail = i.getAssociateEmail();
 			Date scheduled = new Date(i.getDate());// TODO: check this is valid date
 			String location = i.getLocation();
-			Interview newInterview = new Interview(0, managerEmail, associateEmail, scheduled, null, null, location, null, null, new Client(1, "Dell"));//new Interview(0, managerEmail, associateId, scheduled, null, null, i.getLocation(), null, null);	
+			String client = i.getClient();
+			
+			Client c = clientRepo.getByClientName(client);
+			
+			if (c == null) {
+				c = new Client(0, client);
+				clientRepo.save(c);
+			}
+			
+
+			Interview newInterview = new Interview(0, managerEmail, associateEmail, scheduled, null, null, location, null, null, c);	
 			return save(newInterview);
 		} catch (Exception e) {
 			System.out.println("exception: " + e);

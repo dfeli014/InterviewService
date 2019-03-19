@@ -1,6 +1,5 @@
 package com.revature.controllers;
 
-import java.io.Console;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -109,7 +108,7 @@ public class InterviewController {
 			return ResponseEntity.ok(returnedInterview);
 		}
 		else {
-			return (ResponseEntity<Interview>) ResponseEntity.badRequest();
+			return new ResponseEntity<Interview>(HttpStatus.BAD_REQUEST);
 		}
 	}
   
