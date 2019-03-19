@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.revature.dtos.AssociateInterview;
 import com.revature.dtos.FeedbackData;
+import com.revature.dtos.Interview24Hour;
+import com.revature.dtos.InterviewAssociateJobData;
 import com.revature.models.Interview;
 import com.revature.models.InterviewFeedback;
 import com.revature.models.InterviewFormat;
@@ -71,56 +73,9 @@ public class InterviewController {
 	//returns 2 numbers in a list
 	//the first is the number of users
 	//the second is the number of users who received 24 hour notice (according to the associate)
-	@GetMapping("reports/request24/associate/")
+	@GetMapping("reports/request24/associate")
 	public List<Integer> getInterviewsWithin24HourNoticeAssociate() {
-		//find all interviews
-		List<Interview> allUsers = interviewService.findAll();
-		//return
-		List<Integer> returning;
-		//find all interviews where the users were notified in advance
-		ArrayList<Interview> allNotifiedUsers = new ArrayList<Interview>();
-		
-		//count all interviews
-		int countAll = allUsers.size();
-
-		//build a new list iteratively for allNotifiedUsers
-		for (Interview i : allUsers)
-		{
-			if (i.getAssociateInput() == null)
-				System.out.println("This interview has no associate input");
-			if (i.getAssociateInput() != null)
-				if (i.getAssociateInput().getReceivedNotifications() == null)
-					System.out.println("This interview has associate input but no received notifications date");
-			
-			//check of non null
-			if (i.getAssociateInput() != null)
-				//check of non null
-				if (i.getAssociateInput().getReceivedNotifications() != null)
-				{
-					//Singleton Calendar
-					Calendar cal = Calendar.getInstance();
-					//Set time on calendar to current receivedNotifications date
-					cal.setTime(i.getScheduled());
-					Date curDate = cal.getTime();
-					//Add 24 Hours to the current date
-					cal.add(Calendar.DATE, -1);
-					//Calculate a new date, one day from the receivedNotifications
-					Date oneDayBefore = cal.getTime();
-					//If meets criteria, push to new list
-					if (i.getAssociateInput().getReceivedNotifications().before(oneDayBefore) || !(i.getAssociateInput().getReceivedNotifications().after(oneDayBefore)))
-					{
-						allNotifiedUsers.add(i);
-					}
-			
-					System.out.println("getScheduled: "+i.getScheduled()+" oneDayBefore: "+oneDayBefore+" Associate: "+i.getAssociateInput().getReceivedNotifications());
-					System.out.println(i.getAssociateInput().getReceivedNotifications().before(oneDayBefore)+" vs "+(!(i.getAssociateInput().getReceivedNotifications().after(oneDayBefore))));
-				}
-		}
-		
-		//count only interviews that are within 24 hour notice
-		int countNotified = allNotifiedUsers.size();
-		returning = Arrays.asList(countAll, countNotified);
-        return returning;
+		return interviewService.getInterviewsWithin24HourNoticeAssociate();
     }
 	
 	@GetMapping("{InterviewId}")
@@ -138,53 +93,7 @@ public class InterviewController {
 	//the second is the number of users who received 24 hour notice (according to the manager)
 	@GetMapping("reports/request24/manager")
 	public List<Integer> getInterviewsWithin24HourNoticeManager() {
-		//find all interviews
-		List<Interview> allUsers = interviewService.findAll();
-		//return
-		List<Integer> returning;
-		//find all interviews where the users were notified in advance
-		ArrayList<Interview> allNotifiedUsers = new ArrayList<Interview>();
-		
-		//count all interviews
-		int countAll = allUsers.size();
-
-		//build a new list iteratively for allNotifiedUsers
-		for (Interview i : allUsers)
-		{
-			if (i.getNotified() == null)
-			{
-				System.out.println("This interview has no manager input");
-			}
-			
-			
-			//check of non null
-				if (i.getNotified() != null)
-				{
-					//Singleton Calendar
-					Calendar cal = Calendar.getInstance();
-					//Set time on calendar to current receivedNotifications date
-					cal.setTime(i.getScheduled());
-					Date curDate = cal.getTime();
-					//Add 24 Hours to the current date
-					cal.add(Calendar.DATE, -1);
-					//Calculate a new date, one day from the receivedNotifications
-					Date oneDayBefore = cal.getTime();
-					//If meets criteria, push to new list
-					if (i.getNotified().before(oneDayBefore) || !(i.getNotified().after(oneDayBefore)))
-					{
-						allNotifiedUsers.add(i);
-					}
-			
-					System.out.println("getScheduled: "+i.getScheduled()+" oneDayBefore: "+oneDayBefore+" Manager: "+i.getNotified());
-					System.out.println(i.getNotified().before(oneDayBefore)+" vs "+(!(i.getNotified().after(oneDayBefore))));
-				}
-				
-		}
-		
-		//count only interviews that are within 24 hour notice
-		int countNotified = allNotifiedUsers.size();
-		returning = Arrays.asList(countAll, countNotified);
-        return returning;
+		return interviewService.getInterviewsWithin24HourNoticeManager();
     }
 
 	@PostMapping("/saveinterview")
@@ -242,7 +151,7 @@ public class InterviewController {
 		if(result != null) {
 			return ResponseEntity.ok(interviewService.setFeedback(f));
 		}
-		return (ResponseEntity<Interview>) ResponseEntity.badRequest();
+		return new ResponseEntity<Interview>(HttpStatus.BAD_REQUEST);
 	}
 	
 	@GetMapping("Feedback/InterviewId/{InterviewId}")
@@ -265,7 +174,7 @@ public class InterviewController {
         
         return interviewService.findInterviewsPerAssociate(pageParameters);
     }
-	
+
 	@GetMapping("reports/AssociateNeedFeedback")
 	public List<User> getAssociateNeedFeedback() {
         return interviewService.getAssociateNeedFeedback();
@@ -281,6 +190,41 @@ public class InterviewController {
         
         return interviewService.getAssociateNeedFeedback(pageParameters);
     }
+	
+
+	@GetMapping("reports/interview24")
+	public List<Interview24Hour> getAll24HourNotice() {
+        return interviewService.getAll24HourNotice();
+    }
+	
+	@GetMapping("reports/interview24/page")
+	public Page<Interview24Hour> getAll24HourNotice(
+            @RequestParam(name="pageNumber", defaultValue="0") Integer pageNumber,
+            @RequestParam(name="pageSize", defaultValue="5") Integer pageSize) {
+		// Example url call: ~:8091/reports/getAll24HourNotice/page?pageNumber=0&pageSize=3
+		// The above url will return the 0th page of size 3.
+        Pageable pageParameters = PageRequest.of(pageNumber, pageSize);
+        
+        return interviewService.getAll24HourNotice(pageParameters);
+    }
+	
+
+	@GetMapping("reports/interviewJD")
+	public List<InterviewAssociateJobData> getAllJD() {
+        return interviewService.getAllJD();
+    }
+	
+	@GetMapping("reports/interviewJD/page")
+	public Page<InterviewAssociateJobData> getAllJD(
+            @RequestParam(name="pageNumber", defaultValue="0") Integer pageNumber,
+            @RequestParam(name="pageSize", defaultValue="5") Integer pageSize) {
+		// Example url call: ~:8091/reports/getAll24HourNotice/page?pageNumber=0&pageSize=3
+		// The above url will return the 0th page of size 3.
+        Pageable pageParameters = PageRequest.of(pageNumber, pageSize);
+        
+        return interviewService.getAllJD(pageParameters);
+    }
+	
 	
 	// [0] is the total number of interviews
 	// [1] is the number of interviews with no feedback requested

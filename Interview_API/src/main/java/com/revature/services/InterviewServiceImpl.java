@@ -1,6 +1,8 @@
 package com.revature.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.io.Console;
 import java.sql.Date;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -42,6 +43,8 @@ import com.revature.models.Interview;
 import com.revature.repos.AssociateInputRepo;
 import com.revature.repos.ClientRepo;
 import com.revature.dtos.FeedbackData;
+import com.revature.dtos.Interview24Hour;
+import com.revature.dtos.InterviewAssociateJobData;
 import com.revature.models.FeedbackStatus;
 import com.revature.models.Interview;
 import com.revature.models.InterviewFeedback;
@@ -159,11 +162,6 @@ public class InterviewServiceImpl implements InterviewService {
 	}
 
 	public Page<AssociateInterview> findInterviewsPerAssociate(Pageable page) {
-		// List<AssociateInterview> associates = findInterviewsPerAssociate();
-		// int start = page.getPageNumber()*page.getPageSize();
-		// int end = ((page.getPageNumber()+1)*page.getPageSize())-1;
-		// return new PageImpl<AssociateInterview>(associates.subList(start, end), page,
-		// associates.size());
 		PageImpl PI = ListToPage.getPage(findInterviewsPerAssociate(), page);
 		return PI;
 	}
@@ -197,15 +195,17 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
 	public Interview setFeedback(FeedbackData f) {
-		InterviewFeedback interviewFeedback = new InterviewFeedback(0, new Date(f.getFeedbackRequestedDate()), f.getFeedbackText(), new Date(f.getFeedbackReceivedDate()), new FeedbackStatus());
-		System.out.println("interviewFeedback\n" + interviewFeedback);
+		InterviewFeedback interviewFeedback = new InterviewFeedback(0, new Date(f.getFeedbackRequestedDate()), f.getFeedbackText(), new Date(f.getFeedbackReceivedDate()), new FeedbackStatus(1, "Pending"));
+		System.out.println("interviewFeedback\n" + interviewFeedback.toString());
+		System.out.println("interviewStatus\n" + interviewFeedback.getStatus());
 		Interview i = interviewRepo.findById(f.getInterviewId());
 		if(i != null) {
 			interviewFeedback = feedbackRepo.save(interviewFeedback);
 			i.setFeedback(interviewFeedback);	
 			return save(i);
 		}
-		else return null;
+		else 
+			return null;
   }
   
 	@Override
@@ -220,7 +220,11 @@ public class InterviewServiceImpl implements InterviewService {
 			}
 		}
 		for(String N: needFeedback) {
-			associates.add(userClient.findByEmail(N).getBody());
+			try {
+				associates.add(userClient.findByEmail(N).getBody());
+			} catch (Exception E) {
+				System.out.println(E);
+			}
 		}
 		return associates;
 	}
@@ -258,6 +262,176 @@ public class InterviewServiceImpl implements InterviewService {
 		return feedbackChart;
 	}
 
+	public List<Interview> getAllInterviewsWithin24HourNoticeAssociate(){
+		//find all interviews
+		List<Interview> allUsers = interviewRepo.findAll();
+		//find all interviews where the users were notified in advance
+		ArrayList<Interview> allNotifiedUsers = new ArrayList<Interview>();
+		
+		//count all interviews
+		int countAll = allUsers.size();
+
+		//build a new list iteratively for allNotifiedUsers
+		for (Interview i : allUsers)
+		{
+			if (i.getAssociateInput() == null)
+				System.out.println("This interview has no associate input");
+			if (i.getAssociateInput() != null)
+				if (i.getAssociateInput().getReceivedNotifications() == null)
+					System.out.println("This interview has associate input but no received notifications date");
+			
+			//check of non null
+			if (i.getAssociateInput() != null)
+				//check of non null
+				if (i.getAssociateInput().getReceivedNotifications() != null)
+				{
+					//Singleton Calendar
+					Calendar cal = Calendar.getInstance();
+					//Set time on calendar to current receivedNotifications date
+					cal.setTime(i.getScheduled());
+					Date curDate = cal.getTime();
+					//Add 24 Hours to the current date
+					cal.add(Calendar.DATE, -1);
+					//Calculate a new date, one day from the receivedNotifications
+					Date oneDayBefore = cal.getTime();
+					//If meets criteria, push to new list
+					if (i.getAssociateInput().getReceivedNotifications().before(oneDayBefore) || !(i.getAssociateInput().getReceivedNotifications().after(oneDayBefore))) {
+						allNotifiedUsers.add(i);
+					}
+					System.out.println("getScheduled: "+i.getScheduled()+" oneDayBefore: "+oneDayBefore+" Associate: "+i.getAssociateInput().getReceivedNotifications());
+					System.out.println(i.getAssociateInput().getReceivedNotifications().before(oneDayBefore)+" vs "+(!(i.getAssociateInput().getReceivedNotifications().after(oneDayBefore))));
+				}
+		}
+        return allNotifiedUsers;
+	}
+	
+	public List<Integer> getInterviewsWithin24HourNoticeAssociate(){
+		//find all interviews
+		List<Interview> allNotifiedUsers = getAllInterviewsWithin24HourNoticeAssociate();
+		//return
+		List<Integer> returning;		
+		//count only interviews that are within 24 hour notice
+		int countNotified = allNotifiedUsers.size();
+		returning = Arrays.asList(interviewRepo.findAll().size(), countNotified);
+        return returning;
+	}
+	
+	public List<Interview> getAllInterviewsWithin24HourNoticeManager(){
+		//find all interviews
+		List<Interview> allUsers = interviewRepo.findAll();
+		//find all interviews where the users were notified in advance
+		ArrayList<Interview> allNotifiedUsers = new ArrayList<Interview>();
+		
+		//count all interviews
+		int countAll = allUsers.size();
+
+		//build a new list iteratively for allNotifiedUsers
+		for (Interview i : allUsers)
+		{
+			if (i.getNotified() == null)
+			{
+				System.out.println("This interview has no manager input");
+			}
+			
+			
+			//check of non null
+				if (i.getNotified() != null)
+				{
+					//Singleton Calendar
+					Calendar cal = Calendar.getInstance();
+					//Set time on calendar to current receivedNotifications date
+					cal.setTime(i.getScheduled());
+					Date curDate = cal.getTime();
+					//Add 24 Hours to the current date
+					cal.add(Calendar.DATE, -1);
+					//Calculate a new date, one day from the receivedNotifications
+					Date oneDayBefore = cal.getTime();
+					//If meets criteria, push to new list
+					if (i.getNotified().before(oneDayBefore) || !(i.getNotified().after(oneDayBefore))){
+						allNotifiedUsers.add(i);
+					}
+			
+					System.out.println("getScheduled: "+i.getScheduled()+" oneDayBefore: "+oneDayBefore+" Manager: "+i.getNotified());
+					System.out.println(i.getNotified().before(oneDayBefore)+" vs "+(!(i.getNotified().after(oneDayBefore))));
+				}
+				
+		}
+        return allNotifiedUsers;
+	}
+	
+	public List<Integer> getInterviewsWithin24HourNoticeManager() {
+		//find all interviews
+		List<Interview> allNotifiedUsers = getAllInterviewsWithin24HourNoticeManager();
+		//return
+		List<Integer> returning;		
+		//count only interviews that are within 24 hour notice
+		int countNotified = allNotifiedUsers.size();
+		returning = Arrays.asList(interviewRepo.findAll().size(), countNotified);
+        return returning;
+    }
+
+	private List<Interview24Hour> getAll24HourNoticeWithoutName(){
+		List<Interview> DataIn = interviewRepo.findAll();
+		System.out.println(DataIn);
+		List<Interview24Hour> DataOut = new ArrayList<Interview24Hour>();
+		for(Interview I: DataIn) {
+			DataOut.add(new Interview24Hour(I));
+		}
+		return DataOut;
+	}
+	
+	public List<Interview24Hour> getAll24HourNotice(){
+		List<Interview24Hour> Data= getAll24HourNoticeWithoutName();
+		
+		for(Interview24Hour I: Data) {
+			try {
+				User U = userClient.findByEmail(I.getAssocEmail()).getBody();
+				System.out.println(U);
+				I.setAssocName(U.getFirstName()+" "+U.getLastName());
+			} catch (Exception E){
+				System.out.println(E);
+			}
+		}
+		
+		return Data;
+	}
+	
+	public Page<Interview24Hour> getAll24HourNotice(Pageable page) {
+		PageImpl PI = ListToPage.getPage(getAll24HourNotice(), page);
+		return PI;
+	}
+
+	private List<InterviewAssociateJobData> getAllJDNoName(){
+		List<Interview> DataIn = interviewRepo.findAll();
+		System.out.println(DataIn);
+		List<InterviewAssociateJobData> DataOut = new ArrayList<InterviewAssociateJobData>();
+		for(Interview I: DataIn) {
+			DataOut.add(new InterviewAssociateJobData(I));
+		}
+		return DataOut;
+	}
+	
+	public List<InterviewAssociateJobData> getAllJD(){
+		List<InterviewAssociateJobData> Data= getAllJDNoName();
+		
+		for(InterviewAssociateJobData I: Data) {
+			try {
+				User U = userClient.findByEmail(I.getAssocEmail()).getBody();
+				System.out.println(U);
+				I.setAssocName(U.getFirstName()+" "+U.getLastName());
+			} catch (Exception E){
+				System.out.println(E);
+			}
+		}
+		
+		return Data;
+	}
+	
+	public Page<InterviewAssociateJobData> getAllJD(Pageable page) {
+		PageImpl PI = ListToPage.getPage(getAllJD(), page);
+		return PI;
+	}
+	
 	@Override
 	public InterviewFeedback getInterviewFeedbackByInterviewID(int interviewId) {
 		return interviewRepo.findById(interviewId).getFeedback();
