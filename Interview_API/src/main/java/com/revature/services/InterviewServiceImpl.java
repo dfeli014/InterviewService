@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
+import com.revature.cognito.constants.CognitoRoles;
 import com.revature.cognito.dtos.CognitoRegisterBody;
 import com.revature.cognito.dtos.CognitoRegisterResponse;
 import com.revature.cognito.dtos.CognitoTokenClaims;
@@ -89,8 +90,13 @@ public class InterviewServiceImpl implements InterviewService {
 
 	@Override
 	public List<Interview> findAll() {
-		// TODO Auto-generated method stub
-		return interviewRepo.findAll();
+		List<String> roles = cognitoUtil.getRequesterRoles();
+		if(roles.contains(CognitoRoles.ADMIN) || roles.contains(CognitoRoles.STAGING_MANAGER))
+			return interviewRepo.findAll();
+		else {
+			String email = cognitoUtil.getRequesterClaims().getEmail();
+			return interviewRepo.findByAssociateEmail(email);
+		}
 	}
 
 
