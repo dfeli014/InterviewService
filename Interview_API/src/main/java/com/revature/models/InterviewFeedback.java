@@ -155,13 +155,6 @@ public class InterviewFeedback {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "InterviewFeedback [id=" + id + ", feedbackRequested=" + feedbackRequested + ", feedback=" + feedback
-				+ ", feedbackReceived=" + feedbackReceived + ", feedbackDelivered=" + feedbackDelivered + ", status="
-				+ status + ", interviewId=" + interview.getId() + "]";
-	}
-	
 	
 	
 }

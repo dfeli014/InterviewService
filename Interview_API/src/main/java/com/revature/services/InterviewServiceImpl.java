@@ -196,8 +196,6 @@ public class InterviewServiceImpl implements InterviewService {
 
 	public Interview setFeedback(FeedbackData f) {
 		InterviewFeedback interviewFeedback = new InterviewFeedback(0, new Date(f.getFeedbackRequestedDate()), f.getFeedbackText(), new Date(f.getFeedbackReceivedDate()), new FeedbackStatus(1, "Pending"));
-		System.out.println("interviewFeedback\n" + interviewFeedback.toString());
-		System.out.println("interviewStatus\n" + interviewFeedback.getStatus());
 		Interview i = interviewRepo.findById(f.getInterviewId());
 		if(i != null) {
 			interviewFeedback = feedbackRepo.save(interviewFeedback);
