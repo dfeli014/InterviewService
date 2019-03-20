@@ -56,6 +56,21 @@ public class InterviewController {
 		return interviewService.findAll();
 	}
 	
+	@GetMapping("/pages")
+	public Page<Interview> getInterviewPageByAssociateEmail(
+            @RequestParam(name="orderBy", defaultValue="id") String orderBy,
+            @RequestParam(name="direction", defaultValue="ASC") String direction,
+            @RequestParam(name="pageNumber", defaultValue="0") Integer pageNumber,
+            @RequestParam(name="pageSize", defaultValue="5") Integer pageSize,
+            @RequestParam(name="email") String email) {
+		// Example url call: ~:8091/interview/page?pageNumber=0&pageSize=3
+		// The above url will return the 0th page of size 3.
+		Sort sorter = new Sort(Sort.Direction.valueOf(direction), orderBy);
+        Pageable pageParameters = PageRequest.of(pageNumber, pageSize, sorter);
+        
+        return interviewService.findAllByAssociateEmail(email, pageParameters);
+    }
+	
 	@GetMapping("/page")
 	public Page<Interview> getInterviewPage(
             @RequestParam(name="orderBy", defaultValue="id") String orderBy,

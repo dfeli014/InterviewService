@@ -30,6 +30,7 @@ public interface InterviewService {
 	Interview addNewInterview(NewInterviewData i);
 	Interview addAssociateInput(NewAssociateInput a);
 	Page<Interview> findAll(Pageable page);
+	Page<Interview> findAllByAssociateEmail(String email, Pageable page);
 	List<AssociateInterview> findInterviewsPerAssociate();
 	Page<AssociateInterview> findInterviewsPerAssociate(Pageable page);
 	List<Integer> getInterviewsWithin24HourNoticeAssociate();

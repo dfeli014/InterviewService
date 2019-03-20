@@ -457,4 +457,9 @@ public class InterviewServiceImpl implements InterviewService {
 	public Interview findByManagerEmail(String s) {
 		return null;
 	}
+
+	public Page<Interview> findAllByAssociateEmail(String email, Pageable page) {
+		PageImpl PI = ListToPage.getPage(interviewRepo.findByAssociateEmail(email), page);
+		return PI;
+	}
 }
