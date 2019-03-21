@@ -76,6 +76,11 @@ public class FeedbackStatus {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "FeedbackStatus [id=" + id + ", statusDesc=" + statusDesc + "]";
+	}
+
 
 	
 	

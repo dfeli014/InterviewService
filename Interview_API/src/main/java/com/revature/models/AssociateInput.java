@@ -147,6 +147,6 @@ public class AssociateInput {
 		} else if (!receivedNotifications.equals(other.receivedNotifications))
 			return false;
 		return true;
-	}	
-	
+	}		
+
 }

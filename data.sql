@@ -53,8 +53,8 @@ begin transaction;
 	/*Level 2 Tables*/
 		create table interview (
 			interview_id                     serial    not null unique,
-			manager_id                       integer   not null,
-			associate_id                     integer   not null,
+			manager_email                    text      not null,
+			associate_email                  text      not null,
 			place                            text      not null,
 			scheduled                        timestamp not null,        --Manager told the assoc they have an interview scheduled for ${X}
 			notified                         timestamp,                 --Manager says they told the assoc at ${X} that they have an interview
