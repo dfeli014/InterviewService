@@ -20,3 +20,8 @@ Interview API for Staging Management System for Revature.
 7. (Optional) You will probably need to start up the User Service to get all of the Cohorts and Associates for New Interview Component on      the UI
 
 #Step 2 - Set up UI 
+
+
+Bugs
+  Feign calls need to be done after pagination to optimize and speed up calls.
+  
