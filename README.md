@@ -2,7 +2,7 @@
 Interview API for Staging Management System for Revature.
 
 
-#Step 1 - Set up DB and Interview Service
+# Step 1 - Set up DB and Interview Service
 1. You will need to create your own PostgreSQL DB on either your local machine or on a RDS. 
 2. Figure out the schema necessary for this service. 
 3. Will need to run the scripts included on that schema. 
@@ -15,13 +15,15 @@ Interview API for Staging Management System for Revature.
   "DB_PASSWORD": "DB password",
   "DB_SCHEMA": "Schema where you have the tables saved", 
   "GATEWAY_URL": "Gateway or Discovery Service URL (i.e. localhost:port")
-5. Start running the Gateway Service and the Service Registry 
+5. Start running the Gateway Service and the Service Registry (requires addiional cognito config)
 6. Start up this microservice
-7. (Optional) You will probably need to start up the User Service to get all of the Cohorts and Associates for New Interview Component on      the UI
+7. (Optional) You will probably need to start up the User Service to get all of the Cohorts and Associates for New Interview Component on the UI (requires addiional cognito and database config)
 
-#Step 2 - Set up UI 
+# Step 2 - Set up UI
+1. npm install
+2. npm start
+  no additional environment variable configuration if running services locally
 
-
-Bugs
-  Feign calls need to be done after pagination to optimize and speed up calls.
-  
+# Bugs
+  Feign calls need to be done after pagination to optimize and speed up calls. 
+  test endpoint no longer required
